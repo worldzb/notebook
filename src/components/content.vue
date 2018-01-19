@@ -1,6 +1,11 @@
 <template>
 	<div :class="contentClass">
 		<div class="content-ul">
+			<div class="module-title">
+				<div>
+					{{download}}
+				</div>
+			</div>
 			<wd-editor></wd-editor>
 		</div>
 	</div>
@@ -9,7 +14,7 @@
 
 <script>
 
-import {mapActions} from 'vuex';
+import {mapGetters,mapActions} from 'vuex';
 import GlobalFunc from '../lib/globalFunc.js';
 
 
@@ -29,6 +34,7 @@ export default{
 	updated:function(){
 		
 	},
+	computed:mapGetters(['download']),
 	methods:{
 		
 	}
@@ -50,5 +56,6 @@ export default{
 .content-ul{background-color: #ddd;
 	overflow-y:auto;
 	overflow-x:hidden;
+	border-right: 10px solid #eee
 }
 </style>

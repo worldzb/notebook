@@ -5,9 +5,11 @@
 				<div>
 					<br>
 					<i class="fa fa-plus"></i>
-					新建文档
+					<a href="" title="">新建文档</a>
 				</div>
 			</div>
+
+
 			<a href="javascript:;" :class="isModuleActive[0]?'list-group-item active':'list-group-item'" @click="switchModule(0)">
 				<i class="fa fa-newspaper-o">
 				</i>
@@ -18,11 +20,30 @@
 					<i class="fa fa-file-text"></i>&nbsp;
 					text-doc
 				</a>
+				<a href="javascript:;" class="list-group-item doc-list" title="">
+					<i class="fa fa-file-text"></i>&nbsp;
+					text-doc
+				</a>
 			</div>
+
+
 			<a href="javascript:;" 
 			:class="isModuleActive[1]?'list-group-item active':'list-group-item'" @click="switchModule(1)">
-			<i class="glyphicon glyphicon-plus"></i>&nbsp;我的图书
+			<i class="fa fa-book"></i>&nbsp;我的图书
 			</a>
+			<div class="new-doc">
+				<a href="javascript:;" class="list-group-item doc-list" title="">
+					<i class="fa fa-file-text"></i>&nbsp;
+					text-doc
+				</a>
+				<a href="javascript:;" class="list-group-item doc-list" title="">
+					<i class="fa fa-file-text"></i>&nbsp;
+					text-doc
+				</a>
+			</div>
+
+
+
 			<a href="javascript:;" :class="isModuleActive[2]?'list-group-item active':'list-group-item'" @click="switchModule(2)">
 				<i class="glyphicon glyphicon-edit"></i>&nbsp;修改
 			</a>
@@ -30,21 +51,16 @@
 				<i class="glyphicon glyphicon-trash"></i>&nbsp;回收站
 			</a>
 			
-
-			<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-			<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-			<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-			<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 		</div>
 	</div>
 </template>
 
 
 <script>
-
-import {mapActions} from 'vuex';
+import VueResource from 'vue-resource';
+import {mapGetters,mapActions} from 'vuex';
 import GlobalFunc from '../lib/globalFunc.js';
-
+Vue.use(VueResource);
 
 export default{
 	data(){
@@ -65,14 +81,33 @@ export default{
 	updated:function(){
 		
 	},
+	computed:mapGetters(['download']),
 	methods:{
 		...mapActions(['incre']),
+
+
+		getNewDoc(){
+			let that=this;
+			this.$http.get('http://localhost:80/www/lt/index.php/Book/apiGetChapter',{
+				params:{
+					BookName:'inform',
+					p:0,
+				}
+			}).then(()=>{
+
+			});
+		},
 		switchModule:function(index){
 			for(var i=0;i<this.isModuleActive.length;i++){
 					this.$set(this.isModuleActive,i,false);
 				}
 			this.$set(this.isModuleActive,index,true);
 			this.incre(index);
+			switch(index){
+				case 0:
+					this.getNewDoc();
+					break;
+			}
 		},
 		getBookName:function(){
 			this.BookName=this.getQueryString("BookName");
@@ -96,7 +131,7 @@ export default{
 
 ::-webkit-scrollbar{
   display:none;
-}
+} 
 /*
 隐藏滚动条
  */
@@ -104,7 +139,7 @@ export default{
 	height: 60px;
 	width: 100%;
 	background-color: #fff;
-	border-bottom: 2px solid #ccc;
+	border-bottom: 2px solid #eee;
 	text-align: center;
 }
 .module-title div{
@@ -113,8 +148,8 @@ export default{
 	font-size: 18px;
 	cursor: pointer;
 }
-.module-title div:hover{
-	background:#ddd ;
+.module-title div a:hover{
+	color: red;
 }
 
 
@@ -123,22 +158,24 @@ export default{
 	border-radius: 0;
 	border: none;
 	height: 50px;
-	line-height: 30px
+	line-height: 30px;
+	font-size: 16px
 }
 .sider-bar{padding:0; 
 	background-color: #eee;
 	overflow-x:hidden;
 }
-.sider-bar-ul{background-color: #ddd;
+.sider-bar-ul{background-color: #fff;
 	overflow-y:auto;
 	overflow-x:hidden;
+	border-right: 2px solid #eee
 }
 
 .new-doc a{
-	padding-left: 30px
+	padding-left: 35px;
+	font-size: 10px
 }
 .doc-list{
-	height: 30px;
-	background: #eee;
+	font-size: 10px
 }
 </style>

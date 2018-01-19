@@ -2,16 +2,19 @@
 * @Author: worldzb
 * @Date:   2018-01-19 00:02:23
 * @Last Modified by:   worldzb
-* @Last Modified time: 2018-01-19 18:39:19
+* @Last Modified time: 2018-01-20 00:30:45
 */
 
 
 import Vue from 'vue';
 import Vuex from 'vuex';
+import VueResource from 'vue-resource';
+import axios from 'axios'
 
+Vue.prototype.$http = axios;
 //import state from './state.js';
 Vue.use(Vuex);
-
+Vue.use(VueResource);
 
 
 let state={
