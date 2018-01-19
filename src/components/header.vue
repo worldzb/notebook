@@ -34,7 +34,9 @@
 		name:"book-header",
 	}
 </script>
-
+	
 <style>
-
+	#header{
+		margin-bottom: 0;padding: 0;
+	}
 </style>
