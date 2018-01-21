@@ -7,28 +7,30 @@
 				</div>
 			</div>
 			<div class="navig">
-				<span class=""><a href="javascript:;" title="">图书列表</a></span>
+				<span class="" @click="openBook(0,true)"><a href="javascript:;" title="">图书列表</a></span>
 				<span v-if="isShow.chapterList">
 					<span><i class="fa fa-angle-double-right"></i></span>
 					<span><a href="javascript:;" title="">章节列表</a></span>
 				</span>
+				<!-- <span v-if="isShow.chapterList">
+					<span><i class="fa fa-angle-double-right"></i></span>
+					<span><a href="javascript:;" title="">章节列表</a></span>
+				</span> -->
 			</div>
 			<div v-if="isShow.booklist">
-				<a href="javascript:;" :class="isModuleActive[index]?'list-group-item active':'list-group-item'" v-for="(item,index) in booklist" @click="openBook(index,false)">
-					<i class="fa fa-newspaper-o">
+				<a href="javascript:;" class="list-group-item" v-for="(item,index) in gBooklist" @click="openBook(index,false)">
+					<i class="fa fa-book" style="color:#f6ce62">
 					</i>
 					{{item.BookName}}
 				</a>
 			</div>
 			<div v-if="isShow.chapterList">
-				<a href="javascript:;" :class="isModuleActive[index]?'list-group-item active':'list-group-item'" v-for="(item,index) in chapterList">
+				<a href="javascript:;" class="list-group-item" v-for="(item,index) in chapterList">
 					<i class="fa fa-newspaper-o">
 					</i>
 					{{item.Title}}
 				</a>
 			</div>
-
-
 		</div>
 	</div>
 </template>
@@ -53,11 +55,11 @@ export default{
 		}
 	},
 	computed:{
-		...mapGetters(['booklist']),
+		...mapGetters(['gBooklist']),
 	},
 	watch:{
-		booklist:()=>{
-			this.chapterList=this.booklist[0].MainBody;
+		gBooklist:()=>{
+			//alert('haha');
 		}
 	},
 	created:function(){
@@ -73,7 +75,7 @@ export default{
 
 	methods:{
 		openBook(index,bool){
-			//this.chapterList=this.booklist[index].MainBody;
+			this.chapterList=this.gBooklist[index].MainBody;
 			this.isShow.booklist=bool;
 			this.isShow.chapterList=!bool;
 		}

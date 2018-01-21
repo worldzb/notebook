@@ -2,7 +2,7 @@
 * @Author: worldzb
 * @Date:   2018-01-19 00:02:23
 * @Last Modified by:   worldzb
-* @Last Modified time: 2018-01-21 16:03:51
+* @Last Modified time: 2018-01-22 00:27:01
 */
 
 
@@ -29,7 +29,7 @@ const mutations ={
 }
 
 const getters={
-	booklist(state){
+	gBooklist(state){
 		return state.bookList;
 	},
 	

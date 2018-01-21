@@ -10,7 +10,7 @@
 			</div>
 
 
-			<a href="javascript:;" :class="isModuleActive[0]?'list-group-item active':'list-group-item'" @click="switchModule(0)">
+			<a href="javascript:;" :class="isModuleActive[0].self?'list-group-item active':'list-group-item'" @click="switchModule(0)">
 				<i class="fa fa-newspaper-o">
 				</i>
 				&nbsp;&nbsp;最新文档
@@ -28,10 +28,11 @@
 
 
 			<a href="javascript:;" 
-			:class="isModuleActive[1]?'list-group-item active':'list-group-item'" @click="switchModule(1)">
+			:class="isModuleActive[1].self?'list-group-item active':'list-group-item'" @click="switchModule(1)">
 			<i class="fa fa-book"></i>&nbsp;&nbsp;我的图书 <i v-show="isload.mybook" class="fa fa-spinner fa-pulse"></i>
 			</a>
-			<div class="new-doc">
+
+			<div class="new-doc" v-if=''>
 				<a href="javascript:;" class="list-group-item doc-list" title="" v-for="(item,index) in bookList">
 					<i class="fa fa-book"></i>&nbsp;
 					{{item.BookName}}
@@ -39,10 +40,10 @@
 			</div>
 
 
-			<a href="javascript:;" :class="isModuleActive[2]?'list-group-item active':'list-group-item'" @click="switchModule(2)">
+			<a href="javascript:;" :class="isModuleActive[2].self?'list-group-item active':'list-group-item'" @click="switchModule(2)">
 				<i class="glyphicon glyphicon-edit"></i>&nbsp;&nbsp;修改
 			</a>
-			<a href="javascript:;" :class="isModuleActive[3]?'list-group-item active':'list-group-item'" @click="switchModule(3)">
+			<a href="javascript:;" :class="isModuleActive[3].self?'list-group-item active':'list-group-item'" @click="switchModule(3)">
 				<i class="glyphicon glyphicon-trash"></i>&nbsp;&nbsp;回收站
 			</a>
 			
@@ -64,7 +65,8 @@ export default{
 				mybook:false,
 			},
 			siderBarClass:"col-md-2 sider-bar",
-			isModuleActive:[true,false,false,false],
+			isModuleActive:[{self:true},{self:false},{self:false},{self:false}],
+			switchList:{},
 			bookList:'',
 		}
 	},
@@ -78,8 +80,17 @@ export default{
 	updated:function(){
 		
 	},
-	computed:mapGetters(['booklist']),
-
+	computed:mapGetters(['gBooklist']),
+	watch:{
+		gBooklist:()=>{
+			let arr=[];
+			alert(this.gBooklist);
+			for (var i = 0; i < this.gBooklist.length; i++) {
+				arr[i]=false;
+			}
+			this.isModuleActive[1].child=arr;
+		}
+	},
 	/**
 	 * 方法列表
 	 * @type {Object}
@@ -104,9 +115,9 @@ export default{
 		},
 		switchModule:function(index){
 			for(var i=0;i<this.isModuleActive.length;i++){
-					this.$set(this.isModuleActive,i,false);
-				}
-			this.$set(this.isModuleActive,index,true);
+				this.$set(this.isModuleActive,i,{self:false,child:[]});
+			}
+			this.$set(this.isModuleActive,index,{self:true});
 			switch(index){
 				case 0:
 					this.getNewDoc();
