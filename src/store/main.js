@@ -2,42 +2,37 @@
 * @Author: worldzb
 * @Date:   2018-01-19 00:02:23
 * @Last Modified by:   worldzb
-* @Last Modified time: 2018-01-20 00:30:45
+* @Last Modified time: 2018-01-21 16:03:51
 */
 
 
 import Vue from 'vue';
 import Vuex from 'vuex';
-import VueResource from 'vue-resource';
-import axios from 'axios'
-
-Vue.prototype.$http = axios;
+import axios from 'axios';
 //import state from './state.js';
 Vue.use(Vuex);
-Vue.use(VueResource);
-
 
 let state={
-	count:'vuex',
+	bookList:'',
 }
 
 const actions={
-	incre:({commit},a)=>{
-		//alert('actions');
-		commit('incre',a);
+	asynBookList:({commit},arg)=>{
+		commit('asynBookList',arg);
 	}
 }
 
 const mutations ={
-	incre(state,a){
-		state.count=a;
+	asynBookList(state,arg){
+		state.bookList=arg;
 	}
 }
 
 const getters={
-	download(state){
-		return state.count;
-	}
+	booklist(state){
+		return state.bookList;
+	},
+	
 }
 
 

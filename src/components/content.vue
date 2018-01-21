@@ -3,7 +3,7 @@
 		<div class="content-ul">
 			<div class="module-title">
 				<div>
-					{{download}}
+					
 				</div>
 			</div>
 			<wd-editor></wd-editor>
@@ -34,7 +34,7 @@ export default{
 	updated:function(){
 		
 	},
-	computed:mapGetters(['download']),
+	computed:mapGetters(['booklist']),
 	methods:{
 		
 	}

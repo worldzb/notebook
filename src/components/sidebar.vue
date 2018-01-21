@@ -5,7 +5,7 @@
 				<div>
 					<br>
 					<i class="fa fa-plus"></i>
-					<a href="" title="">新建文档</a>
+					<a href="javascript:;" title="">新建文档</a>
 				</div>
 			</div>
 
@@ -13,7 +13,7 @@
 			<a href="javascript:;" :class="isModuleActive[0]?'list-group-item active':'list-group-item'" @click="switchModule(0)">
 				<i class="fa fa-newspaper-o">
 				</i>
-				&nbsp;最新文档
+				&nbsp;&nbsp;最新文档
 			</a>
 			<div class="new-doc">
 				<a href="javascript:;" class="list-group-item doc-list" title="">
@@ -29,26 +29,21 @@
 
 			<a href="javascript:;" 
 			:class="isModuleActive[1]?'list-group-item active':'list-group-item'" @click="switchModule(1)">
-			<i class="fa fa-book"></i>&nbsp;我的图书
+			<i class="fa fa-book"></i>&nbsp;&nbsp;我的图书 <i v-show="isload.mybook" class="fa fa-spinner fa-pulse"></i>
 			</a>
 			<div class="new-doc">
-				<a href="javascript:;" class="list-group-item doc-list" title="">
-					<i class="fa fa-file-text"></i>&nbsp;
-					text-doc
-				</a>
-				<a href="javascript:;" class="list-group-item doc-list" title="">
-					<i class="fa fa-file-text"></i>&nbsp;
-					text-doc
+				<a href="javascript:;" class="list-group-item doc-list" title="" v-for="(item,index) in bookList">
+					<i class="fa fa-book"></i>&nbsp;
+					{{item.BookName}}
 				</a>
 			</div>
 
 
-
 			<a href="javascript:;" :class="isModuleActive[2]?'list-group-item active':'list-group-item'" @click="switchModule(2)">
-				<i class="glyphicon glyphicon-edit"></i>&nbsp;修改
+				<i class="glyphicon glyphicon-edit"></i>&nbsp;&nbsp;修改
 			</a>
 			<a href="javascript:;" :class="isModuleActive[3]?'list-group-item active':'list-group-item'" @click="switchModule(3)">
-				<i class="glyphicon glyphicon-trash"></i>&nbsp;回收站
+				<i class="glyphicon glyphicon-trash"></i>&nbsp;&nbsp;回收站
 			</a>
 			
 		</div>
@@ -58,17 +53,19 @@
 
 <script>
 import VueResource from 'vue-resource';
-import {mapGetters,mapActions} from 'vuex';
+import {mapGetters,mapActions,mapMutations} from 'vuex';
 import GlobalFunc from '../lib/globalFunc.js';
 Vue.use(VueResource);
 
 export default{
 	data(){
 		return {
+			isload:{
+				mybook:false,
+			},
 			siderBarClass:"col-md-2 sider-bar",
 			isModuleActive:[true,false,false,false],
-			moduleName:"chapter-list",
-			BookName:"没有指定图书",
+			bookList:'',
 		}
 	},
 	created:function(){
@@ -81,32 +78,42 @@ export default{
 	updated:function(){
 		
 	},
-	computed:mapGetters(['download']),
+	computed:mapGetters(['booklist']),
+
+	/**
+	 * 方法列表
+	 * @type {Object}
+	 */
 	methods:{
-		...mapActions(['incre']),
-
-
-		getNewDoc(){
+		/*
+		...mapActions(['asynBookList']),*/
+		...mapMutations(['asynBookList']),
+		getMyBook(){
 			let that=this;
-			this.$http.get('http://localhost:80/www/lt/index.php/Book/apiGetChapter',{
-				params:{
-					BookName:'inform',
-					p:0,
-				}
-			}).then(()=>{
-
+			this.isload.mybook=true;
+			this.$http.get('http://localhost:80/www/lt/index.php/BookApi/getBookList',{
+			}).then((res)=>{
+				let red=eval(res);
+				that.bookList=red.data.list;
+				that.isload.mybook=false;
+				that.asynBookList(red.data.list);
 			});
+		},
+		getNewDoc(){
+
 		},
 		switchModule:function(index){
 			for(var i=0;i<this.isModuleActive.length;i++){
 					this.$set(this.isModuleActive,i,false);
 				}
 			this.$set(this.isModuleActive,index,true);
-			this.incre(index);
 			switch(index){
 				case 0:
 					this.getNewDoc();
 					break;
+				case 1:
+					this.getMyBook();
+				break;
 			}
 		},
 		getBookName:function(){
@@ -159,23 +166,20 @@ export default{
 	border: none;
 	height: 50px;
 	line-height: 30px;
-	font-size: 16px
 }
 .sider-bar{padding:0; 
-	background-color: #eee;
+	background-color: #fff;
 	overflow-x:hidden;
+	border-right: 2px solid #eee;
 }
 .sider-bar-ul{background-color: #fff;
 	overflow-y:auto;
 	overflow-x:hidden;
-	border-right: 2px solid #eee
 }
 
 .new-doc a{
-	padding-left: 35px;
-	font-size: 10px
+	padding-left: 40px;
 }
 .doc-list{
-	font-size: 10px
 }
 </style>

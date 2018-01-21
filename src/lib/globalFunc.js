@@ -2,7 +2,7 @@
 * @Author: worldzb
 * @Date:   2018-01-19 18:51:15
 * @Last Modified by:   worldzb
-* @Last Modified time: 2018-01-19 21:22:19
+* @Last Modified time: 2018-01-21 18:05:59
 */
 
 
@@ -32,7 +32,7 @@ class GlobalFunc{
 	static heightSyn(objA,objB){
 		$(objA).css('height',$(window).height()-$(objB).height()+20);
 	}
-
+	
 
 }
 export default GlobalFunc;
