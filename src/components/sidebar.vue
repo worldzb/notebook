@@ -33,9 +33,15 @@
 			</a>
 
 			<div class="new-doc" v-if=''>
-				<a href="javascript:;" class="list-group-item doc-list" title="" v-for="(item,index) in bookList">
+				<a href="javascript:;" 
+				:class="isModuleActive[1].child[index]?'list-group-item doc-list active':'list-group-item doc-list'" 
+				title="" 
+				v-for="(item,index) in bookList" 
+				@click='selectBook(index)'>
+
 					<i class="fa fa-book"></i>&nbsp;
 					{{item.BookName}}
+
 				</a>
 			</div>
 
@@ -83,12 +89,12 @@ export default{
 	computed:mapGetters(['gBooklist']),
 	watch:{
 		gBooklist:()=>{
-			let arr=[];
+			/*let arr=[];
 			alert(this.gBooklist);
 			for (var i = 0; i < this.gBooklist.length; i++) {
 				arr[i]=false;
 			}
-			this.isModuleActive[1].child=arr;
+			this.isModuleActive[1].child=arr;*/
 		}
 	},
 	/**
@@ -108,13 +114,19 @@ export default{
 				that.bookList=red.data.list;
 				that.isload.mybook=false;
 				that.asynBookList(red.data.list);
+
+				let arr=[];
+				for(let i=0;i<that.bookList.length;i++){
+					arr[i]=false;
+				}
+				this.isModuleActive[1].child=arr;
 			});
 		},
 		getNewDoc(){
 
 		},
 		switchModule:function(index){
-			for(var i=0;i<this.isModuleActive.length;i++){
+			for(let i=0;i<this.isModuleActive.length;i++){
 				this.$set(this.isModuleActive,i,{self:false,child:[]});
 			}
 			this.$set(this.isModuleActive,index,{self:true});
@@ -127,6 +139,19 @@ export default{
 				break;
 			}
 		},
+		
+		selectBook(index){
+			for(let i=0;i<this.isModuleActive.length;i++){
+				this.$set(this.isModuleActive,i,{self:false,child:[]});
+			}
+			for(let i=0;i<this.isModuleActive[1].child.length;i++){
+				this.$set(this.isModuleActive[1].child,i,false);
+			}
+			this.$set(this.isModuleActive[1].child,index,true);//只是child局部更新
+			this.$set(this.isModuleActive,1,{self:false,child:this.isModuleActive[1].child});//inmoduleActive 整体更新
+			console.log(this.isModuleActive[1].child)
+		},
+
 		getBookName:function(){
 			this.BookName=this.getQueryString("BookName");
 			//this.BookName=decodeURIComponent(this.BookName);
