@@ -58,8 +58,8 @@ export default{
 		...mapGetters(['gBooklist']),
 	},
 	watch:{
-		gBooklist:()=>{
-			//alert('haha');
+		gBooklist:(val)=>{
+			console.log(val);
 		}
 	},
 	created:function(){

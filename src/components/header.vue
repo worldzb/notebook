@@ -9,7 +9,11 @@
 							<img class="img-circle" src="http://bbs.worldzb.cn/www/lt/Public/images/logo.jpg" alt="" width="50" height="50">
 						</div>	
                     	<div class="navbar-header">
-                        	<a class="navbar-brand f-20" href="#">世界周边写作平台</a>
+                        	<a class="navbar-brand f-20" href="#">
+                        		{{appName}}
+								&nbsp;<small><small>{{version}}</small></small>
+                        	</a>
+
                         </div>
                         <div>
                         <ul class="nav navbar-nav navbar-right">
@@ -30,8 +34,16 @@
 </template>
 
 <script>
+	
+	import config from '../config/config.js';
 	export default{
 		name:"book-header",
+		data(){
+			return {
+				appName:config.appName,
+				version:config.version,
+			}
+		}
 	}
 </script>
 	

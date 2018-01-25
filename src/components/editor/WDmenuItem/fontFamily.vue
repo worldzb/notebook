@@ -7,7 +7,7 @@
 				<i class="fa fa-caret-down"></i>
 			</a>
 		</a>
-		<ul class="dropdown-menu active fontList" role="menu">
+		<ul class="dropdown-menu my-active fontList" role="menu">
 			<li v-for="(item,index) in fontFamilyArr" @click="setFontName(index)">
 				<a href="javascript:;">{{item.name}}</a>
 			</li>
@@ -62,7 +62,7 @@
 		text-overflow:ellipsis;
 		white-space: nowrap;
 	}
-	.active{
+	.my-active{
 		overflow-y: auto
 	}
 	.fontList{
