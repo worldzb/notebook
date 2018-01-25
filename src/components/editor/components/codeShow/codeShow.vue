@@ -1,52 +1,88 @@
 <template>
-	<div class="codeShow" contenteditable="true">
-		
-<pre class="language-css prismjsVes" contenteditable="true">
-<code class="language-css" v-html='code'>
-</code>
-</pre> 
-	
-	<textarea class="inputCode" v-model='inpuCode' @input="runChang()" @keydown="enterKeyDown()" spellcheck="false">
-			
-	</textarea>
+	<div id="codeEditor" class="codeShow">
+		<div>
+			语言：
+			<select>
+				<option value="volvo">Volvo</option>
+				<option value="saab">Saab</option>
+				<option value="opel">Opel</option>
+				<option value="audi">Audi</option>
+			</select>
+			大小：
+			<select>
+				<option value="volvo">Volvo</option>
+				<option value="saab">Saab</option>
+				<option value="opel">Opel</option>
+				<option value="audi">Audi</option>
+			</select>
+		</div>
+		<monaco-editor
+			height="200"
+	        language="typescript"
+	        srcPath="https://cdn.bootcss.com/monaco-editor/0.10.1/min"
+	        :code="code"
+	        :options="options"
+	        :highlighted="highlightLines"
+	        :changeThrottle="500"
+	        theme="vs"
+	        @mounted="onMounted"
+	        @codeChange="onCodeChange"
+		>
+		</monaco-editor>
 	</div>
-
 </template>
 
 
 <script type="text/javascript">
-	import Prism from 'prismjs';
-	function syncWH(){
-		$('.codeShow textarea').css('height',$('.codeShow pre').height()+50);
-		$('.codeShow textarea').css('width',$('.codeShow pre').width()+28);
-	}
-
-
-
-
-
-
+	import domFunc from './domFunc.js';
+	import monacoEditor from './Monaco.vue';
 	export default{
 		data(){
 			return{
-				code:"<html></html>",
-				inpuCode:"",
+				code: '// type your code \n',
+				highlightLines: [
+				{
+					number: 0,
+					class: 'primary-highlighted-line'
+				},
+				{
+					number: 0,
+					class: 'secondary-highlighted-line'
+				}
+				]
 			}
 		},
+		components:{
+		   monacoEditor,
+		},
 		created(){
-			syncWH();
+			this.options = {
+				selectOnLineNumbers: false
+			};
+		},
+		mounted(){
+			this.init();
 		},
 		methods:{
-			runChang(){
-				//console.log(this.inpuCode);
-				this.code = Prism.highlight(this.inpuCode,Prism.languages.javascript);
+			init(){
+				
 			},
-			enterKeyDown:function(event){
-				let ev=event || window.event;
-				if(ev.keyCode==13 || ev.keyCode==32){
-					this.code = Prism.highlight(this.inpuCode,Prism.languages.javascript);
-					syncWH();
-				}
+			onMounted(editor) {
+				console.log('after mount!', editor, editor.getValue(), editor.getModel());
+				this.editor = editor;
+			},
+			onMounted2(editor) {
+				console.log('after mount!', editor, editor.getValue(), editor.getModel());
+				this.editor2 = editor;
+			},
+			onCodeChange(editor) {
+				console.log('code changed!', 'code:' + this.editor.getValue());
+			},
+			onCodeChange2(editor) {
+				console.log('code changed!', 'code:' + this.editor2.getValue());
+			},
+			clickHandler() {
+				console.log('here is the code:', this.editor.getValue());
 			}
 		}
 	}
@@ -55,50 +91,7 @@
 
 
 <style type="text/css">
-	.inputCode{
-		position: absolute;
-		text-shadow: 0 -.1em .2em black;
-		font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-		padding-left: 14px;
-		padding-top: 14px;
-		resize: none;
-		width: 100%;
-		font-size:13px;
-		overflow-y:hidden;
-		outline: none;
-		margin-top:7px;
-		border-radius: 5px 5px;
-		background-color:rgba(225,225,225,0);
-		line-height: 1.5;
-		border: none;
-		color: #111;
-		caret-color:#fff;
-
-		white-space: pre;
-		word-spacing: normal;
-		word-break: normal;
-		word-wrap: normal;
-		line-height: 1.5;
-
-		-moz-tab-size: 4;
-		-o-tab-size: 4;
-		tab-size: 4;
-
-		-webkit-hyphens: none;
-		-moz-hyphens: none;
-		-ms-hyphens: none;
-		hyphens: none;
-		opacity: 0.2
-
-	}
 	.codeShow{
-		padding: 0;margin: 0;
-		display: inline-block;
+		border:1px solid #aaa;
 	}
-	.prismjsVes{
-		position: absolute;
-		float: left;
-		width: 100%
-	}
-
 </style>

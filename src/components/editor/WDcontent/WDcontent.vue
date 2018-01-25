@@ -1,28 +1,41 @@
 <template>
 	<div id="content" >
-		<div class="mainBody" id="mb" contenteditable="true" :style="style">
+		<div class="mainBody" id="mb" contenteditable="true" :style="sty">
 			<div v-html="test">
 				
 			</div>
 		</div>
+		
 	</div>
 </template>
 
 <script type="text/javascript">
 
 	import vue from 'vue';
-	import box from './modules/box.vue'
+	import {mapGetters,mapActions} from 'vuex';
+	import store from '../store/main.js';
+	import box from './modules/box.vue';
 
 	export default{
 		data(){
 			return{
-				style:{
-				},
-				test:'<box>辅导费</box>',
+				test:'begin',
+				color:'',
 			}
 		},
 		components:{
-			box:box
+			box:box,
+		},
+		computed:{
+			...mapGetters(['download']),
+			sty(){
+				const fixedWidth = '100%';
+				const fixedHeight = ($(window).height()-39)+'px';
+				return {
+					width:fixedWidth,
+					height:fixedHeight
+				}
+			}
 		},
 		props:{
 			width:{
@@ -48,16 +61,19 @@
 		min-height: 400px;
 		outline: none;
 		background-color: #fff;
-		border: 1px solid #eee;
-		font-size: 20px;
+		border: 1px solid #fff;
+		font-size: 14px;
 		overflow-y: auto;
 		padding-left: 20px;
 		padding-right: 20px;
-
 		display: inline-block;
 	}
 	.mainBody>pre{
 		width: 100%;
 		display: inline-block;
 	}
+	.btn-default{
+		color:#88a;
+	}
+	
 </style>
