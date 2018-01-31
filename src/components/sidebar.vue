@@ -10,19 +10,20 @@
 			</div>
 
 
-			<a href="javascript:;" :class="isModuleActive[0].self?'list-group-item active':'list-group-item'" @click="switchModule(0)">
+			<a href="javascript:;" :class="isModuleActive[0].self?'list-group-item active':'list-group-item'" @click="switchModule(0,null)">
 				<i class="fa fa-newspaper-o">
 				</i>
 				&nbsp;&nbsp;最新文档
+				<i v-show="isload.newDoc" class="fa fa-spinner fa-pulse"></i>
 			</a>
 			<div class="new-doc">
-				<a href="javascript:;" class="list-group-item doc-list" title="">
+				<a href="javascript:;" 
+					:class="isModuleActive[0].child[index]?'list-group-item doc-list active':'list-group-item doc-list'" 
+					title="" 
+					v-for="(item,index) in newDocList"
+					@click="switchModule(0,index)">
 					<i class="fa fa-file-text"></i>&nbsp;
-					text-doc
-				</a>
-				<a href="javascript:;" class="list-group-item doc-list" title="">
-					<i class="fa fa-file-text"></i>&nbsp;
-					text-doc
+					{{item.doc_title}}
 				</a>
 			</div>
 
@@ -37,7 +38,7 @@
 				:class="isModuleActive[1].child[index]?'list-group-item doc-list active':'list-group-item doc-list'" 
 				title="" 
 				v-for="(item,index) in bookList" 
-				@click='selectBook(index)'>
+				@click='switchModule(1,index)'>
 
 					<i class="fa fa-book"></i>&nbsp;
 					{{item.BookName}}
@@ -46,10 +47,10 @@
 			</div>
 
 
-			<a href="javascript:;" :class="isModuleActive[2].self?'list-group-item active':'list-group-item'" @click="switchModule(2)">
+			<a href="javascript:;" :class="isModuleActive[2].self?'list-group-item active':'list-group-item'" @click="switchModule(2,null)">
 				<i class="glyphicon glyphicon-edit"></i>&nbsp;&nbsp;修改
 			</a>
-			<a href="javascript:;" :class="isModuleActive[3].self?'list-group-item active':'list-group-item'" @click="switchModule(3)">
+			<a href="javascript:;" :class="isModuleActive[3].self?'list-group-item active':'list-group-item'" @click="switchModule(3,null)">
 				<i class="glyphicon glyphicon-trash"></i>&nbsp;&nbsp;回收站
 			</a>
 			
@@ -69,11 +70,13 @@ export default{
 		return {
 			isload:{
 				mybook:false,
+				newDoc:false,
 			},
 			siderBarClass:"col-md-2 sider-bar",
 			isModuleActive:[{self:true},{self:false},{self:false},{self:false}],
 			switchList:{},
 			bookList:'',
+			newDocList:'',
 		}
 	},
 	created:function(){
@@ -99,7 +102,6 @@ export default{
 	},
 	/**
 	 * 方法列表
-	 * @type {Object}
 	 */
 	methods:{
 		/*
@@ -114,7 +116,6 @@ export default{
 				that.bookList=red.data.list;
 				that.isload.mybook=false;
 				that.asynBookList(red.data.list);
-
 				let arr=[];
 				for(let i=0;i<that.bookList.length;i++){
 					arr[i]=false;
@@ -123,33 +124,48 @@ export default{
 			});
 		},
 		getNewDoc(){
+			let that=this;
+			this.isload.newDoc=true;
+			this.$http.get('http://localhost:80/www3/home-server/public/getDocList',{
+				params:{
 
+				}
+			}).then((res)=>{
+				let red=eval(res);
+				that.newDocList=red.data;
+				let arr=[];
+				for(let i=0;i<that.newDocList.length;i++){
+					arr[i]=false;
+				}
+				this.isModuleActive[0].child=arr;
+				this.isload.newDoc=false;
+				//console.log(res);
+			})
 		},
-		switchModule:function(index){
+		switchModule(indexParent,indexChild){
 			for(let i=0;i<this.isModuleActive.length;i++){
 				this.$set(this.isModuleActive,i,{self:false,child:[]});
 			}
-			this.$set(this.isModuleActive,index,{self:true});
-			switch(index){
-				case 0:
+			if(indexChild==null){
+				this.$set(this.isModuleActive,indexParent,{self:true,child:[]});
+				switch(indexParent){
+					case 0:
 					this.getNewDoc();
 					break;
-				case 1:
+					case 1:
 					this.getMyBook();
-				break;
+					break;
+				}
+			}else{
+				for(let i=0;i<this.isModuleActive[indexParent].child.length;i++){
+					this.$set(this.isModuleActive[indexParent].child,i,false);
+				}
+				this.$set(this.isModuleActive[indexParent].child,indexChild,true);//只是child局部更新
+				this.$set(this.isModuleActive,indexParent,{self:false,child:this.isModuleActive[indexParent].child});
 			}
-		},
-		
-		selectBook(index){
-			for(let i=0;i<this.isModuleActive.length;i++){
-				this.$set(this.isModuleActive,i,{self:false,child:[]});
-			}
-			for(let i=0;i<this.isModuleActive[1].child.length;i++){
-				this.$set(this.isModuleActive[1].child,i,false);
-			}
-			this.$set(this.isModuleActive[1].child,index,true);//只是child局部更新
-			this.$set(this.isModuleActive,1,{self:false,child:this.isModuleActive[1].child});//inmoduleActive 整体更新
-			console.log(this.isModuleActive[1].child)
+
+
+			//console.log(this.isModuleActive[indexParent].child)
 		},
 
 		getBookName:function(){
@@ -212,7 +228,6 @@ export default{
 	overflow-y:auto;
 	overflow-x:hidden;
 }
-
 .new-doc a{
 	padding-left: 40px;
 }
