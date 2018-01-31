@@ -2,8 +2,10 @@
 	<div :class="siderBarClass">
 		<div class="chapter-list-ul">
 			<div class="module-title">
-				<div>
-					
+				<br>
+				<div id="search">
+					<input type="text" placeholder="搜索">
+					<i class="fa fa-search"></i>
 				</div>
 			</div>
 			<div class="navig">
@@ -122,6 +124,32 @@ export default{
 	padding: 0;
 	overflow-y:auto;
 	overflow-x:hidden;
-
+}
+#search{
+	margin:0 auto;
+	font-size: 13px;
+	width: 90%;height: 30px;
+	padding-top: 4px;
+	padding-left: 20px;
+	border:1px solid #eee;
+	border-radius: 20px;
+}
+#search:hover{
+	border:1px solid #eee;
+}
+#search input{
+	width: 75%;
+	float: left;
+	border:none;
+	border-radius: 5px;
+	outline: none;
+}
+#search i{
+	padding: 5px;
+	border-radius: 20px;
+}
+#search i:hover{
+	background-color: #999;
+	color: white
 }
 </style>

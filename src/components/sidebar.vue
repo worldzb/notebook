@@ -133,6 +133,7 @@ export default{
 			}).then((res)=>{
 				let red=eval(res);
 				that.newDocList=red.data;
+				that.asynBookList(red.data);
 				let arr=[];
 				for(let i=0;i<that.newDocList.length;i++){
 					arr[i]=false;
