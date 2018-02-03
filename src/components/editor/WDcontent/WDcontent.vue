@@ -5,7 +5,7 @@
 				
 			</div>
 		</div>
-		
+		{{download}}
 	</div>
 </template>
 

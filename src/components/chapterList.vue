@@ -135,7 +135,7 @@ export default{
 	border-radius: 20px;
 }
 #search:hover{
-	border:1px solid #eee;
+	border:1px solid #ddd;
 }
 #search input{
 	width: 75%;

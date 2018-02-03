@@ -1,8 +1,8 @@
 /*
 * @Author: worldzb
 * @Date:   2017-12-10 20:54:06
-* @Last Modified by:   worldzb
-* @Last Modified time: 2018-01-25 20:22:39
+* @Last Modified by:   yang
+* @Last Modified time: 2018-02-02 11:10:54
 */
 
 //字体选择
@@ -24,15 +24,25 @@ const fontFace=[
 	{name:"Comic Sans MS",class:"'Comic Sans MS', cursive, sans-serif"},
 	{name:"Impact",class:"Impact, Charcoal, sans-serif"},
 	{name:"Verdana",class:"Verdana, Geneva, sans-serif"},
-]
+];
 
+const imgUpload={
+	url:'http://dev.cc:80/imgUpload',
+};
+
+const codeShow={
+	cdnUrl:"https://cdn.bootcss.com/monaco-editor/0.10.1/min",
+}
 
 
 const config={
+	codeShow:codeShow,
 	MenuTextShow:false,
 	fontFace:fontFace,
-	version:'1.0.0(内测版)',
+	imgUpload:imgUpload,
+	version:'1.1.0(内测版)',
 }
 
 
 export default config;
+

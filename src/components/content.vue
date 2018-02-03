@@ -94,7 +94,6 @@ export default{
 	background-color: #337AB7;
 }
 .more{
-	background: red;
 	font-size:20px;
 }
 .more i{
