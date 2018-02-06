@@ -6,6 +6,7 @@
     <div id="appBody">
       <side-bar></side-bar>
       <chapter-list></chapter-list>
+      
       <content-box></content-box>
     </div>
   </div>
@@ -20,11 +21,8 @@
 
 
   import test from './components/test.vue';
-  import VueRouter from 'vue-router';
 
 
-  Vue.use(VueRouter);
-  let a=new VueRouter();
   export default{
     data(){
       return{

@@ -28,23 +28,27 @@ import {mapGetters,mapActions} from 'vuex';
 import GlobalFunc from '../lib/globalFunc.js';
 
 
-
 export default{
 	data(){
 		return {
 			contentClass:"col-md-8 content",
+			test:''
 		}
 	},
 	created:function(){
 		
 	},
 	mounted:function(){
+		//this.test=this.gBooklist
 		GlobalFunc.heightSyn('.content-ul','#header');
 	},
 	updated:function(){
 		
 	},
-	computed:mapGetters(['booklist']),
+	components:{
+		
+	},
+	//computed:mapGetters(['gBooklist']),
 	methods:{
 		
 	}

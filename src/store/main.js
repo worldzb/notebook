@@ -2,15 +2,16 @@
 * @Author: worldzb
 * @Date:   2018-01-19 00:02:23
 * @Last Modified by:   worldzb
-* @Last Modified time: 2018-01-22 00:27:01
+* @Last Modified time: 2018-02-06 23:51:42
 */
 
 
 import Vue from 'vue';
 import Vuex from 'vuex';
-import axios from 'axios';
+import {editorStore} from '../components/editor/editor/index.js';
 //import state from './state.js';
 Vue.use(Vuex);
+
 
 let state={
 	bookList:'',
@@ -35,17 +36,19 @@ const getters={
 	
 }
 
+const modules={
+	editorStore,
+}
+
+
 
 const store=new Vuex.Store({
+	modules,
 	state,
 	actions,
 	mutations,
-	getters
+	getters,
 });
-
-
-
-
 
 
 

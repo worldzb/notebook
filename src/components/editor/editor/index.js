@@ -1,23 +1,20 @@
 /*
 * @Author: worldzb
 * @Date:   2017-12-10 16:03:48
-* @Last Modified by:   worldzb
-* @Last Modified time: 2018-02-03 22:38:44
+* @Last Modified by:   yang
+* @Last Modified time: 2018-02-05 13:24:45
 */
-import editorCom from './editor.vue'
-import Vue from 'vue';
-import Vuex from 'vuex';
-import store from '../store/main.js';
+import editorCom from './editor.vue';//导入editor组件
+import editorStorePort from '../store/store.js';//导入组件store
 
-Vue.use(Vuex);
-const editor={
+const wdEditor={
 	install:(Vue,options)=>{
 		Vue.component("wd-editor",editorCom);
-		Vue.$store=()=>{
-			return store;
-		}
 	}
 }
+if (typeof window !== 'undefined' && window.Vue) { window.Vue.use(wdEditor);}
 
-if (typeof window !== 'undefined' && window.Vue) { window.Vue.use(editor); }
-export default editor;
+
+//组件导出
+export let editor=wdEditor;
+export let editorStore= editorStorePort;

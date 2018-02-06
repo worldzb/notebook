@@ -4,7 +4,7 @@
 			<div class="module-title">
 				<br>
 				<div id="search">
-					<input type="text" placeholder="搜索">
+					<input type="text" placeholder="搜索" v-model="searchWord">
 					<i class="fa fa-search"></i>
 				</div>
 			</div>
@@ -50,6 +50,7 @@ export default{
 			siderBarClass:'col-md-2 chapter-list',
 			isModuleActive:[true],
 			chapterList:{},
+			searchWord:'',
 			isShow:{
 				booklist:true,
 				chapter:false,
@@ -57,7 +58,7 @@ export default{
 		}
 	},
 	computed:{
-		...mapGetters(['gBooklist']),
+		...mapGetters(['gBooklist','getEditorContent']),
 	},
 	watch:{
 		gBooklist:(val)=>{
@@ -68,8 +69,8 @@ export default{
 		
 	},
 	mounted:function(){
+		this.searchWord=this.getEditorContent;
 		GlobalFunc.heightSyn('.chapter-list-ul','#header');
-		console.log();
 	},
 	updated:function(){
 		
