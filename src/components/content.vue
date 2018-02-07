@@ -27,6 +27,7 @@
 import {mapGetters,mapActions} from 'vuex';
 import GlobalFunc from '../lib/globalFunc.js';
 
+import Vue from 'vue';
 
 export default{
 	data(){
@@ -70,7 +71,7 @@ export default{
 .content-ul{background-color: #ddd;
 	overflow-y:auto;
 	overflow-x:hidden;
-	border-right: 10px solid #eee
+	border-right: 1px solid #eee
 }
 
 .docTitle{

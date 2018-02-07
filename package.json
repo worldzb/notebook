@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "lodash": "^4.17.4",
-    "vue": "^2.5.11",
+    "lodash.debounce": "^4.0.8",
+    "vue": "^2.4.4",
     "vuex": "^3.0.1"
   },
   "browserslist": [
@@ -29,7 +30,6 @@
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.4",
-    "lodash.debounce": "^4.0.8",
     "monaco-editor": "^0.10.1",
     "node-sass": "^4.7.2",
     "prismjs": "^1.10.0",

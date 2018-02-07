@@ -42,7 +42,6 @@
 			},
 			//内容
 			content(){
-				//console.log(mapGetters);
 				return this.getEditorContent;
 			}
 		},
