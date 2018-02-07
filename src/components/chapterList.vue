@@ -69,7 +69,6 @@ export default{
 		
 	},
 	mounted:function(){
-		this.searchWord=this.getEditorContent;
 		GlobalFunc.heightSyn('.chapter-list-ul','#header');
 	},
 	updated:function(){

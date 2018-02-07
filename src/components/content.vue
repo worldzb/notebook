@@ -1,5 +1,5 @@
 <template>
-	<div :class="contentClass">
+	<div :class="contentClass" id="contentBox">
 		<div class="content-ul">
 			<div class="module-title">
 				<div>
@@ -7,7 +7,7 @@
 						<input type="text" name="" placeholder="请输入标题">
 						<span>
 							<span class="btn save"><i class="fa fa-save"></i> 保存</span>
-							<span class="btn more">
+							<span class="more">
 								<i class="fa fa-play-circle"></i>
 								<i class="fa fa-play-circle"></i>
 							</span>

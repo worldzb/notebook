@@ -45,8 +45,10 @@
 	}
 </script>
 
-<style type="text/css">
-
+<style type="text/css" scoped>
+	::-webkit-scrollbar{
+	  display:block;
+	} 
 	.fontFamily{
 		background-color: #fff;
 		font-size: 12px;

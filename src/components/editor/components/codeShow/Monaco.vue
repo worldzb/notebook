@@ -1,5 +1,6 @@
 <template>
-  <div :style="style"></div>
+  <div :style="style">
+  </div>
 </template>
 
 <script>

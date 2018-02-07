@@ -1,25 +1,24 @@
 <template>
 	<div class="codeEditor codeShow" contenteditable="false" @mouseover="msOver()">
 		<div :class="{selectLang:isShow.isSelect}" v-show='isShow.language'>
-			
-			<div style="float: left">
+			<span class="headerItem">
 				<a type="button" class="tag">
 					<input type="text" name="" placeholder="tag">
 				</a>
-			</div>
+			</span>
 
-			<div style="float:left">
+			<span class="headerItem">
 				<a type="button" class="btn btn-default dropdown-toggle lang" 
 				data-toggle="dropdown">
 					{{lang}}
 				</a>
-				<ul class="dropdown-menu my-active" role="menu" style="height:200px">
+				<ul class="dropdown-menu my-active" role="menu" style="height:200px;">
 					<li v-for="(item,index) in language" @click="switchLang(index)">
 						<a href="#">{{item.lang}}</a>
 					</li>
 				</ul>
-			</div>
-			<div style="float: left">
+			</span>
+			<span class="headerItem">
 				<a type="button"  class="btn btn-default dropdown-toggle lang" 
 				data-toggle="dropdown">
 					{{currentTheme}}
@@ -29,13 +28,14 @@
 						<a href="#">{{item}}</a>
 					</li>
 				</ul>
-			</div>
-			<div>
+			</span>
+			<span>
 				<a type="button" class="btn btn-default lang" @click="isShow.body=!isShow.body">
 					{{isShow.body?'隐藏主体':'显示'}}
 				</a>
-			</div>
+			</span>
 		</div>
+
 		<div v-show="isShow.body">
 			<monaco-editor
 			:height="height"
@@ -88,7 +88,7 @@
 				themeList:[
 					'vs','vs-dark'   			//主题列表
 				],
-				currentTheme:'vs', 				//当前主题
+				currentTheme:'vs-dark', 		//当前主题
 				srcPath:'',     				//插件CDN地址
 				isShow:{						//显示开关列表
 					language:false,
@@ -159,7 +159,10 @@
 </script>
 
 
-<style type="text/css">
+<style type="text/css" scoped>
+	::-webkit-scrollbar{
+	  display:block;
+	} 
 	.codeShow{
 		border-top:1px solid #ddd;
 		border-bottom:1px solid #ddd;
@@ -167,14 +170,21 @@
 		border-left:5px solid #ddd;
 	}
 	.selectLang{
-		
+		position: relative;
+	}
+	.headerItem{
+		position: relative;
+	}
+	.headerItem ul{
+		margin-top: 6px;
+		margin-left: 0;
+		overflow-y: auto;
 	}
 	.lang{
-		padding: 2px 8px;
+		padding: 2px 0px;
 		height: 25px;
 		width: 100px;
 		font-family:'Consolas';
-		
 		border-bottom:2px solid #eee;
 	}
 	.tag input{

@@ -34,7 +34,7 @@
 			...mapGetters(['getClearUpDoc','getEditorContent']),
 			sty(){
 				const fixedWidth = '100%';
-				const fixedHeight = ($(window).height()-39)+'px';
+				const fixedHeight = ($(window).height()-90)+'px';
 				return {
 					width:fixedWidth,
 					height:fixedHeight,
@@ -64,7 +64,11 @@
 	}
 </script>
 
-<style type="text/css">
+<style type="text/css" scoped>
+	::-webkit-scrollbar{
+	  display:none;
+	} 
+
 	.mainBody{
 		width: 100%;
 		min-height: 400px;

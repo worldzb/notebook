@@ -1,9 +1,9 @@
 <template>
-<header id="header">
-	<div class="container" style="width: 100%;padding: 0;margin:0;border-radius: none;border: 0">
+<header id="header" >
+	<div class="container" style="width: 100%;padding: 0;margin:0;border: 0">
 		<div class="row" style="padding:0;margin: 0">
 			<div class="col-md-12" style="padding: 0">	
-				<nav class="navbar navbar-default" role="navigation">
+				<nav class="navbar navbar-default navberColor" role="navigation" style="border-radius:0">
 					<div class="container-fluid">
                     	<div class="col-md-1">
 							<img class="img-circle" src="http://bbs.worldzb.cn/www/lt/Public/images/logo.jpg" alt="" width="50" height="50">
@@ -50,5 +50,10 @@
 <style>
 	#header{
 		margin-bottom: 0;padding: 0;
+		background: #aaa;
+	}
+	.navberColor{
+		background:#eee;
+		border-radius: none;
 	}
 </style>
