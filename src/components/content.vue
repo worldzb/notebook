@@ -4,16 +4,23 @@
 			<div class="module-title">
 				<div>
 					<div class="docTitle">
-						<input type="text" name="" placeholder="请输入标题">
+						<strong>
+							<input type="text" name="" placeholder="请输入标题">
+						</strong>
 						<span>
-							<span class="btn save"><i class="fa fa-save"></i> 保存</span>
+							<span class="btn save" style="margin-top:-0px">
+								<i class="fa fa-save"></i>&nbsp; 保存
+							</span>
+							<span class="btn save" style="margin-top:-0px">
+								版本
+							</span>
 							<span class="more">
 								<i class="fa fa-play-circle"></i>
-								<i class="fa fa-play-circle"></i>
+								<i class="fa fa-share-alt"></i>
+								<i class="fa fa-ellipsis-h"></i>
 							</span>
 						</span>
 					</div>
-					
 				</div>
 			</div>
 			<wd-editor></wd-editor>
@@ -90,6 +97,7 @@ export default{
 	margin-top: 20px;
 	width: 80px;
 	padding-top: 5px;
+	display: inline-block;
 }
 .save{
 	background-color: #eee;
@@ -99,7 +107,8 @@ export default{
 	background-color: #337AB7;
 }
 .more{
-	font-size:20px;
+	display: inline-block;
+	font-size: 16px;
 }
 .more i{
 	opacity: 0.6;
