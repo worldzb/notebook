@@ -1,6 +1,7 @@
 <template>
 	<div :class="siderBarClass">
 		<div class="sider-bar-ul">
+
 			<div class="module-title">
 				<div>
 					<br>
@@ -16,6 +17,8 @@
 				&nbsp;&nbsp;最新文档
 				<i v-show="isload.newDoc" class="fa fa-spinner fa-pulse"></i>
 			</a>
+
+			<!-- 最近文档 -->
 			<div class="new-doc">
 				<a href="javascript:;" 
 					:class="isModuleActive[0].child[index]?'list-group-item doc-list active':'list-group-item doc-list'" 
@@ -26,8 +29,8 @@
 					{{item.doc_title}}
 				</a>
 			</div>
-
-
+			
+			<!-- 我的图书 -->
 			<a href="javascript:;" 
 			:class="isModuleActive[1].self?'list-group-item active':'list-group-item'" @click="switchModule(1)">
 			<i class="fa fa-book"></i>&nbsp;&nbsp;我的图书 <i v-show="isload.mybook" class="fa fa-spinner fa-pulse"></i>
@@ -41,11 +44,11 @@
 				@click='switchModule(1,index)'>
 
 					<i class="fa fa-book"></i>&nbsp;
-					{{item.BookName}}
-
+					{{item.bookName}}
 				</a>
 			</div>
 
+			
 
 			<a href="javascript:;" :class="isModuleActive[2].self?'list-group-item active':'list-group-item'" @click="switchModule(2,null)">
 				<i class="glyphicon glyphicon-edit"></i>&nbsp;&nbsp;修改
@@ -63,6 +66,7 @@
 import VueResource from 'vue-resource';
 import {mapGetters,mapActions,mapMutations} from 'vuex';
 import GlobalFunc from '../lib/globalFunc.js';
+import config from '../config/config.js'
 Vue.use(VueResource);
 
 export default{
@@ -107,15 +111,41 @@ export default{
 		/*
 		...mapActions(['asynBookList']),*/
 		...mapMutations(['asynBookList']),
+
+		//获取最近文档
+		getNewDoc(){
+			let that=this;
+			this.isload.newDoc=true;//加载动画开启
+			this.$http.get(config.urls.getNewDoc,{
+				params:{
+
+				}
+			}).then((res)=>{ 
+				let red=eval(res);
+				that.newDocList=red.data.body;
+				that.asynBookList(red.data.body);
+				let arr=[];
+				for(let i=0;i<that.newDocList.length;i++){
+					arr[i]=false;
+				}
+				this.isModuleActive[0].child=arr;
+				this.isload.newDoc=false;//加载动画关闭，加载完成
+				//console.log(res);
+			})
+		},
+
+		//获取我的图书
 		getMyBook(){
 			let that=this;
 			this.isload.mybook=true;
-			this.$http.get('http://localhost:80/www/lt/index.php/BookApi/getBookList',{
+			this.$http.get(config.urls.getMyBook,{
 			}).then((res)=>{
 				let red=eval(res);
-				that.bookList=red.data.list;
+				that.bookList=red.data.body;
 				that.isload.mybook=false;
+				//数据同步到全局
 				that.asynBookList(red.data.list);
+
 				let arr=[];
 				for(let i=0;i<that.bookList.length;i++){
 					arr[i]=false;
@@ -123,26 +153,9 @@ export default{
 				this.isModuleActive[1].child=arr;
 			});
 		},
-		getNewDoc(){
-			let that=this;
-			this.isload.newDoc=true;
-			this.$http.get('http://localhost:80/www3/home-server/public/getDocList',{
-				params:{
 
-				}
-			}).then((res)=>{
-				let red=eval(res);
-				that.newDocList=red.data;
-				that.asynBookList(red.data);
-				let arr=[];
-				for(let i=0;i<that.newDocList.length;i++){
-					arr[i]=false;
-				}
-				this.isModuleActive[0].child=arr;
-				this.isload.newDoc=false;
-				//console.log(res);
-			})
-		},
+
+		//模块切换
 		switchModule(indexParent,indexChild){
 			for(let i=0;i<this.isModuleActive.length;i++){
 				this.$set(this.isModuleActive,i,{self:false,child:[]});
@@ -151,11 +164,11 @@ export default{
 				this.$set(this.isModuleActive,indexParent,{self:true,child:[]});
 				switch(indexParent){
 					case 0:
-					this.getNewDoc();
-					break;
+						this.getNewDoc();
+						break;
 					case 1:
-					this.getMyBook();
-					break;
+						this.getMyBook();
+						break;
 				}
 			}else{
 				for(let i=0;i<this.isModuleActive[indexParent].child.length;i++){
@@ -164,15 +177,15 @@ export default{
 				this.$set(this.isModuleActive[indexParent].child,indexChild,true);//只是child局部更新
 				this.$set(this.isModuleActive,indexParent,{self:false,child:this.isModuleActive[indexParent].child});
 			}
-
-
 			//console.log(this.isModuleActive[indexParent].child)
 		},
 
+		//获取图书名称
 		getBookName:function(){
 			this.BookName=this.getQueryString("BookName");
 			//this.BookName=decodeURIComponent(this.BookName);
 		},
+
 		getQueryString:function(name){
 			var reg = new RegExp(""+name+"/([a-zA-z0-9]|[^\u4e00-\u9fa5])*");
 			var r = window.location.href;
