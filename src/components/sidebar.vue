@@ -64,9 +64,10 @@
 
 <script>
 import VueResource from 'vue-resource';
-import {mapGetters,mapActions,mapMutations} from 'vuex';
+import {mapGetters,mapMutations} from 'vuex';
 import GlobalFunc from '../lib/globalFunc.js';
-import config from '../config/config.js'
+import config from '../config/config.js';
+
 Vue.use(VueResource);
 
 export default{
@@ -108,8 +109,7 @@ export default{
 	 * 方法列表
 	 */
 	methods:{
-		/*
-		...mapActions(['asynBookList']),*/
+		//...mapActions(['asynBookList']),
 		...mapMutations(['asynBookList']),
 
 		//获取最近文档
@@ -123,7 +123,10 @@ export default{
 			}).then((res)=>{ 
 				let red=eval(res);
 				that.newDocList=red.data.body;
-				that.asynBookList(red.data.body);
+				//同步数据
+				that.asynBookList(red.data);
+
+				//更新sidebar 列表选项方案
 				let arr=[];
 				for(let i=0;i<that.newDocList.length;i++){
 					arr[i]=false;
@@ -145,7 +148,7 @@ export default{
 				that.isload.mybook=false;
 				//数据同步到全局
 				that.asynBookList(red.data.list);
-
+				
 				let arr=[];
 				for(let i=0;i<that.bookList.length;i++){
 					arr[i]=false;

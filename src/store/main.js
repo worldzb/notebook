@@ -1,8 +1,8 @@
 /*
 * @Author: worldzb
 * @Date:   2018-01-19 00:02:23
-* @Last Modified by:   yang
-* @Last Modified time: 2018-02-07 10:38:41
+* @Last Modified by:   worldzb
+* @Last Modified time: 2018-02-12 23:44:23
 */
 
 import Vue from 'vue';
@@ -10,7 +10,7 @@ import Vuex from 'vuex';
 import {editorStore} from '../components/editor/editor';
 
 //import state from './state.js';
-
+//Vue.use(Vuex);
 
 let state={
 	bookList:'',
@@ -30,7 +30,7 @@ const mutations ={
 
 const getters={
 	gBooklist(state){
-		return state.bookList;
+		return state.bookList.body;
 	},
 	
 }
@@ -46,7 +46,7 @@ const store=new Vuex.Store({
 	state,
 	actions,
 	mutations,
-	getters
+	getters,
 });
 
 

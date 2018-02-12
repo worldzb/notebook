@@ -11,29 +11,25 @@
 
 			<!-- 模块导航 -->
 			<div class="navig">
-				<span class="" @click="openBook(0,true)"><a href="javascript:;" title="">图书列表</a></span>
+				<span class="" @click="openBook(0,true)">
+					<a href="javascript:;" title="">图书列表</a>
+				</span>
 				<span v-if="isShow.chapterList">
 					<span><i class="fa fa-angle-double-right"></i></span>
 					<span><a href="javascript:;" title="">章节列表</a></span>
 				</span>
 			</div>
-			
+			{{gBooklist}}
 			<!-- 内容大纲 -->
 			<div v-if="isShow.booklist">
-				<a href="javascript:;" class="list-group-item" v-for="(item,index) in gBooklist" @click="openBook(index,false)">
+				<!-- <a href="javascript:;" class="list-group-item">
 					<i class="fa fa-book" style="color:#f6ce62">
 					</i>
-					{{item.BookName}}
-				</a>
+					
+				</a> -->
 			</div>
 
-			<div v-if="isShow.chapterList">
-				<a href="javascript:;" class="list-group-item" v-for="(item,index) in chapterList">
-					<i class="fa fa-newspaper-o">
-					</i>
-					{{item.Title}}
-				</a>
-			</div>
+
 		</div>
 	</div>
 </template>
@@ -41,7 +37,7 @@
 
 <script>
 
-import {mapState,mapGetters,mapActions} from 'vuex';
+import {mapGetters,mapMutations} from 'vuex';
 import GlobalFunc from '../lib/globalFunc.js';
 
 
@@ -55,16 +51,15 @@ export default{
 			isShow:{
 				booklist:true,
 				chapter:false,
-			}
+				newDoc:false,
+			},
 		}
 	},
 	computed:{
-		...mapGetters(['gBooklist','getEditorContent']),
+		...mapGetters(['gBooklist']),
 	},
 	watch:{
-		gBooklist:(val)=>{
-			console.log(val);
-		}
+		
 	},
 	created:function(){
 		
@@ -78,9 +73,7 @@ export default{
 
 	methods:{
 		openBook(index,bool){
-			this.chapterList=this.gBooklist[index].MainBody;
-			this.isShow.booklist=bool;
-			this.isShow.chapterList=!bool;
+			
 		}
 	}
 }

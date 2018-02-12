@@ -11,9 +11,15 @@
 							<span class="btn save" style="margin-top:-0px">
 								<i class="fa fa-save"></i>&nbsp; 保存
 							</span>
-							<span class="btn save" style="margin-top:-0px">
+							<span class="btn save dropdown-toggle" style="margin-top:-0px" data-toggle="dropdown">
 								版本
 							</span>
+							<ul class="dropdown-menu" role="menu">
+								<li>fff</li>
+								<li>fff</li>
+								<li>fff</li>
+							</ul>
+
 							<span class="more">
 								<i class="fa fa-play-circle"></i>
 								<i class="fa fa-share-alt"></i>
