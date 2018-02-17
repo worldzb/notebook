@@ -56,17 +56,19 @@
 			<a href="javascript:;" :class="isModuleActive[3].self?'list-group-item active':'list-group-item'" @click="switchModule(3,null)">
 				<i class="glyphicon glyphicon-trash"></i>&nbsp;&nbsp;回收站
 			</a>
-			
 		</div>
 	</div>
 </template>
 
 
 <script>
+
+import Vue from 'vue';
 import VueResource from 'vue-resource';
-import {mapGetters,mapMutations} from 'vuex';
+import {mapGetters,mapMutations,mapActions} from 'vuex';
 import GlobalFunc from '../lib/globalFunc.js';
 import config from '../config/config.js';
+
 
 Vue.use(VueResource);
 
@@ -89,12 +91,13 @@ export default{
 	},
 	mounted:function(){
 		GlobalFunc.heightSyn('.sider-bar','#header');
-		console.log();
 	},
 	updated:function(){
 		
 	},
-	computed:mapGetters(['gBooklist']),
+	computed:{
+		...mapGetters(['gBooklist','getEditorContent']),
+	},
 	watch:{
 		gBooklist:()=>{
 			/*let arr=[];
@@ -110,12 +113,12 @@ export default{
 	 */
 	methods:{
 		//...mapActions(['asynBookList']),
-		...mapMutations(['asynBookList']),
-
+		...mapMutations(['setEditorContent','asynBookList']),
 		//获取最近文档
 		getNewDoc(){
 			let that=this;
 			this.isload.newDoc=true;//加载动画开启
+			console.log(config.urls.getNewDoc);
 			this.$http.get(config.urls.getNewDoc,{
 				params:{
 
@@ -123,10 +126,7 @@ export default{
 			}).then((res)=>{ 
 				let red=eval(res);
 				that.newDocList=red.data.body;
-				//同步数据
 				that.asynBookList(red.data);
-
-				//更新sidebar 列表选项方案
 				let arr=[];
 				for(let i=0;i<that.newDocList.length;i++){
 					arr[i]=false;
@@ -147,7 +147,7 @@ export default{
 				that.bookList=red.data.body;
 				that.isload.mybook=false;
 				//数据同步到全局
-				that.asynBookList(red.data.list);
+				that.asynBookList(red.data);
 				
 				let arr=[];
 				for(let i=0;i<that.bookList.length;i++){

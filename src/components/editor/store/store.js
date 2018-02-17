@@ -2,8 +2,9 @@
 * @Author: worldzb
 * @Date:   2018-01-08 20:52:24
 * @Last Modified by:   worldzb
-* @Last Modified time: 2018-02-04 22:11:09
+* @Last Modified time: 2018-02-13 22:25:57
 */
+
 const state={
 	editorContent:'<div>开始你的文档</div>',   //编辑器body
 	clearUpDocument:false,          //是否整理文档
@@ -40,11 +41,11 @@ const getters={
 		return state.arrImage;
 	},
 };
-const editorStore={
+let editorStore={
 	state,
 	mutations,
 	actions,
-	getters
+	getters,
 }
 
 export default editorStore;

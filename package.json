@@ -12,8 +12,7 @@
   "dependencies": {
     "lodash": "^4.17.4",
     "lodash.debounce": "^4.0.8",
-    "vue": "^2.4.4",
-    "vuex": "^3.0.1"
+    "vue": "^2.4.4"
   },
   "browserslist": [
     "> 1%",

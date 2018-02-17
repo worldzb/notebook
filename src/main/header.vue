@@ -37,7 +37,7 @@
 	
 	import config from '../config/config.js';
 	export default{
-		name:"book-header",
+		name:"bookHeader",
 		data(){
 			return {
 				appName:config.appName,

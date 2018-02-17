@@ -42,6 +42,7 @@
 			},
 			//内容
 			content(){
+				//console.log(this.$store);
 				return this.getEditorContent;
 			}
 		},

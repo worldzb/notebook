@@ -14,19 +14,18 @@
 				<span class="" @click="openBook(0,true)">
 					<a href="javascript:;" title="">图书列表</a>
 				</span>
-				<span v-if="isShow.chapterList">
+				<span v-if="isShow.chapter">
 					<span><i class="fa fa-angle-double-right"></i></span>
 					<span><a href="javascript:;" title="">章节列表</a></span>
 				</span>
 			</div>
-			{{gBooklist}}
-			<!-- 内容大纲 -->
-			<div v-if="isShow.booklist">
-				<!-- <a href="javascript:;" class="list-group-item">
+
+			<div v-if="isShow.chapter">
+				<a href="javascript:;" class="list-group-item" v-for="(item,index) in chapterList">
 					<i class="fa fa-book" style="color:#f6ce62">
-					</i>
-					
-				</a> -->
+					</i> &nbsp;
+					{{item.doc_title}}
+				</a>
 			</div>
 
 
@@ -49,7 +48,7 @@ export default{
 			chapterList:{},
 			searchWord:'',
 			isShow:{
-				booklist:true,
+				booklist:false,
 				chapter:false,
 				newDoc:false,
 			},
@@ -59,7 +58,11 @@ export default{
 		...mapGetters(['gBooklist']),
 	},
 	watch:{
-		
+		gBooklist:function(val){
+			//alert(val);
+			this.isShow.chapter=true;
+			this.chapterList=val;
+		}
 	},
 	created:function(){
 		

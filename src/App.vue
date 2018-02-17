@@ -1,29 +1,27 @@
-<template id="app">
-  <div >
-    <div id="appHeader">
+<template>
+  <div id="app">
+    <div class="appHeader">
       <book-header></book-header>
     </div>
-    <div id="appBody">
+    <div class="appBody">
       <side-bar></side-bar>
       <chapter-list></chapter-list>
-      
       <content-box></content-box>
     </div>
+    <wd-editor></wd-editor>
   </div>
 </template>
 
-<script>
-  import bookHeader from './components/header.vue';
-  import sideBar from './components/sidebar.vue';
-  import chapterList from './components/chapterList.vue';
-  import contentBox from './components/content.vue';
+<script type="text/javascript">
 
-
-
-  import test from './components/test.vue';
-
+  import bookHeader from './main/header.vue';
+  import sideBar from './main/sidebar.vue';
+  import chapterList from './main/chapterList.vue';
+  import contentBox from './main/content.vue';
+  import test from './main/test.vue';
 
   export default{
+    name:'app',
     data(){
       return{
       }
@@ -35,14 +33,11 @@
       contentBox,
       test,
     },
-    created(){
-
-    }
   }
 </script>
 
 <style type="text/css">
-  #appBody{
+  .appBody{
     margin-top: -20px; 
   }
 </style>

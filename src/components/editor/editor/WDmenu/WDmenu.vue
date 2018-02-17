@@ -29,7 +29,7 @@
 
 <script>
 	import Config from "../container/export.js";
-	console.log(typeof Config);
+	//console.log(typeof Config);
 
 	export default{
 		data(){
