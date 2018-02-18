@@ -18,8 +18,8 @@
 				<i v-show="isload.newDoc" class="fa fa-spinner fa-pulse"></i>
 			</a>
 
-			<!-- 最近文档 -->
-			<div class="new-doc">
+			<!-- 最近文档 下拉列表-->
+			<!-- <div class="new-doc">
 				<a href="javascript:;" 
 					:class="isModuleActive[0].child[index]?'list-group-item doc-list active':'list-group-item doc-list'" 
 					title="" 
@@ -28,7 +28,7 @@
 					<i class="fa fa-file-text"></i>&nbsp;
 					{{item.doc_title}}
 				</a>
-			</div>
+			</div> -->
 			
 			<!-- 我的图书 -->
 			<a href="javascript:;" 
@@ -41,8 +41,7 @@
 				:class="isModuleActive[1].child[index]?'list-group-item doc-list active':'list-group-item doc-list'" 
 				title="" 
 				v-for="(item,index) in bookList" 
-				@click='switchModule(1,index)'>
-
+				@click='getBookChapter(index,item.id)'>
 					<i class="fa fa-book"></i>&nbsp;
 					{{item.bookName}}
 				</a>
@@ -51,10 +50,10 @@
 			
 
 			<a href="javascript:;" :class="isModuleActive[2].self?'list-group-item active':'list-group-item'" @click="switchModule(2,null)">
-				<i class="glyphicon glyphicon-edit"></i>&nbsp;&nbsp;修改
+				<i class="fa fa-calendar"></i>&nbsp;&nbsp;日记
 			</a>
 			<a href="javascript:;" :class="isModuleActive[3].self?'list-group-item active':'list-group-item'" @click="switchModule(3,null)">
-				<i class="glyphicon glyphicon-trash"></i>&nbsp;&nbsp;回收站
+				<i class="fa fa-trash"></i>&nbsp;&nbsp;回收站
 			</a>
 		</div>
 	</div>
@@ -75,6 +74,7 @@ Vue.use(VueResource);
 export default{
 	data(){
 		return {
+			//加载状态
 			isload:{
 				mybook:false,
 				newDoc:false,
@@ -96,29 +96,22 @@ export default{
 		
 	},
 	computed:{
-		...mapGetters(['gBooklist','getEditorContent']),
+		...mapGetters(['getBooklist','getEditorContent']),
 	},
 	watch:{
-		gBooklist:()=>{
-			/*let arr=[];
-			alert(this.gBooklist);
-			for (var i = 0; i < this.gBooklist.length; i++) {
-				arr[i]=false;
-			}
-			this.isModuleActive[1].child=arr;*/
-		}
+		
 	},
 	/**
 	 * 方法列表
 	 */
 	methods:{
 		//...mapActions(['asynBookList']),
-		...mapMutations(['setEditorContent','asynBookList']),
+		...mapMutations(['setNewDoc','setBookList','setChapterList']),
 		//获取最近文档
 		getNewDoc(){
 			let that=this;
 			this.isload.newDoc=true;//加载动画开启
-			console.log(config.urls.getNewDoc);
+			//console.log(config.urls.getNewDoc);
 			this.$http.get(config.urls.getNewDoc,{
 				params:{
 
@@ -126,7 +119,7 @@ export default{
 			}).then((res)=>{ 
 				let red=eval(res);
 				that.newDocList=red.data.body;
-				that.asynBookList(red.data);
+				that.setNewDoc(red.data);
 				let arr=[];
 				for(let i=0;i<that.newDocList.length;i++){
 					arr[i]=false;
@@ -142,12 +135,13 @@ export default{
 			let that=this;
 			this.isload.mybook=true;
 			this.$http.get(config.urls.getMyBook,{
+
 			}).then((res)=>{
 				let red=eval(res);
 				that.bookList=red.data.body;
 				that.isload.mybook=false;
 				//数据同步到全局
-				that.asynBookList(red.data);
+				that.setBookList(red.data);
 				
 				let arr=[];
 				for(let i=0;i<that.bookList.length;i++){
@@ -189,14 +183,30 @@ export default{
 			//this.BookName=decodeURIComponent(this.BookName);
 		},
 
+		//从url中找到对应键 所对应的值
 		getQueryString:function(name){
-			var reg = new RegExp(""+name+"/([a-zA-z0-9]|[^\u4e00-\u9fa5])*");
-			var r = window.location.href;
+			var reg = new RegExp(""+name+"/([a-zA-z0-9]|[^\u4e00-\u9fa5])*");//查找
+			var r = window.location.href;//获取url地址
 			var Kv=r.match(reg)[0];
 			var res=Kv.split('/')[1];//从找出的键值对当中找到值。切割字符串
 			//console.log(r);
 			return decodeURIComponent(res);
 		},
+
+		//获取对应图书的章节列表
+		getBookChapter($index,$id){
+			let that=this;
+			this.$http.get(config.urls.getChapter,{
+				params:{
+					id:$id
+				}
+			}).then((res)=>{
+				let red=eval(res);
+				that.setChapterList(red.data);
+			})
+			this.switchModule(1,$index);
+		}
+
 	}
 }
 	

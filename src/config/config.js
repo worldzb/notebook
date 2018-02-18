@@ -2,7 +2,7 @@
 * @Author: worldzb
 * @Date:   2018-01-25 21:41:24
 * @Last Modified by:   worldzb
-* @Last Modified time: 2018-02-11 22:40:18
+* @Last Modified time: 2018-02-18 22:40:28
 */
 
 const root_path='http://localhost:80/www3/home-server/public/api/v1/';//api根目录
@@ -10,6 +10,7 @@ const root_path='http://localhost:80/www3/home-server/public/api/v1/';//api根�
 const urls_dev={
 	getMyBook:root_path+'getBookList',
 	getNewDoc:root_path+'getNewDoc',
+	getChapter:root_path+'getChapter',
 }
 
 const urls_pro={

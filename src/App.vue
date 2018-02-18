@@ -8,7 +8,6 @@
       <chapter-list></chapter-list>
       <content-box></content-box>
     </div>
-    <wd-editor></wd-editor>
   </div>
 </template>
 

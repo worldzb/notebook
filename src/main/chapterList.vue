@@ -1,6 +1,8 @@
 <template>
 	<div :class="siderBarClass">
 		<div class="chapter-list-ul">
+
+			<!-- 搜索 -->
 			<div class="module-title">
 				<br>
 				<div id="search">
@@ -11,23 +13,44 @@
 
 			<!-- 模块导航 -->
 			<div class="navig">
-				<span class="" @click="openBook(0,true)">
-					<a href="javascript:;" title="">图书列表</a>
+				<span class="">
+					<a href="javascript:;" title="">{{navInfo.first}}</a>
 				</span>
 				<span v-if="isShow.chapter">
 					<span><i class="fa fa-angle-double-right"></i></span>
-					<span><a href="javascript:;" title="">章节列表</a></span>
+					<span><a href="javascript:;" title="">{{navInfo.sec}}</a></span>
 				</span>
 			</div>
+			
 
-			<div v-if="isShow.chapter">
-				<a href="javascript:;" class="list-group-item" v-for="(item,index) in chapterList">
+			<!-- 列表显示 -->
+			<div v-if="isShow.newDoc">
+				<a href="javascript:;" class="list-group-item" v-for="(item,index) in showData">
 					<i class="fa fa-book" style="color:#f6ce62">
 					</i> &nbsp;
 					{{item.doc_title}}
 				</a>
 			</div>
 
+			<div v-if="isShow.booklist">
+				<a href="javascript:;" class="list-group-item" v-for="(item,index) in showData">
+					<i class="fa fa-book" style="color:#f6ce62">
+					</i> &nbsp;
+					{{item.bookName}}
+				</a>
+			</div>
+			
+			<div v-if="isShow.chapter">
+				<a href="javascript:;" 
+				class="list-group-item" 
+				v-for="(item,index) in showData"
+				@click="loadContent()">
+					<i class="fa fa-book" style="color:#f6ce62">
+					</i> &nbsp;
+					{{item.title}}
+				</a>
+			</div>
+			
 
 		</div>
 	</div>
@@ -43,10 +66,16 @@ import GlobalFunc from '../lib/globalFunc.js';
 export default{
 	data(){
 		return {
-			siderBarClass:'col-md-2 chapter-list',
-			isModuleActive:[true],
-			chapterList:{},
-			searchWord:'',
+			siderBarClass:'col-md-2 chapter-list', //组件样式
+			//导航信息（关键词）
+			navInfo:{
+				first:'目录',
+				sec:'',
+				third:'',
+			},
+			searchWord:'',//搜索词条
+			showData:'',//列表显示数据
+			//显示开关
 			isShow:{
 				booklist:false,
 				chapter:false,
@@ -55,14 +84,27 @@ export default{
 		}
 	},
 	computed:{
-		...mapGetters(['gBooklist']),
+		...mapGetters(['getBooklist','getChapterList','getNewDoc']),
 	},
 	watch:{
-		gBooklist:function(val){
-			//alert(val);
+		getNewDoc:function(val){
+			this.closeShow();
+			this.navInfo.first="最新文档";
+			this.isShow.newDoc=true;
+			this.showData=val;
+		},
+		getBooklist:function(val){
+			this.closeShow();
+			this.navInfo.first="我的图书";
+			this.isShow.booklist=true;
+			this.showData=val;
+		},
+		getChapterList:function(val){
+			this.closeShow();
+			this.navInfo.sec="章节列表";
 			this.isShow.chapter=true;
-			this.chapterList=val;
-		}
+			this.showData=val;
+		},
 	},
 	created:function(){
 		
@@ -75,8 +117,14 @@ export default{
 	},
 
 	methods:{
-		openBook(index,bool){
-			
+		...mapMutations(['setEditorContent']),
+		closeShow(){
+			this.isShow.booklist=false;
+			this.isShow.chapter=false;
+			this.isShow.newDoc=false;
+		},
+		loadContent(){
+			this.setEditorContent('haha');
 		}
 	}
 }
