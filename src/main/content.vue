@@ -5,7 +5,7 @@
 			<div>
 				<div class="docTitle">
 					<strong>
-						<input type="text" name="" placeholder="请输入标题">
+						<input type="text" name="" placeholder="请输入标题" v-model='title'>
 					</strong>
 					<span>
 						<span class="btn save" style="margin-top:-0px">
@@ -39,11 +39,13 @@
 <script>
 
 import GlobalFunc from '../lib/globalFunc.js';
+import {mapMutations,mapGetters} from 'vuex';
 
 export default{
 	data(){
 		return {
 			contentClass:"col-md-8 content",
+			title:'aa',
 			test:''
 		}
 	},
@@ -57,9 +59,20 @@ export default{
 	updated(){
 		
 	},
-	//computed:mapGetters(['gBooklist']),
+	computed:mapGetters(['getEditorTitle']),
+	watch:{
+		//标题get
+		getEditorTitle:function(val){
+			this.title=val;
+		},
+		//标题set
+		title:function(val){
+			this.setEditorTitle(val);
+		},
+
+	},
 	methods:{
-		
+		...mapMutations(['setEditorTitle']),
 	}
 }
 	
@@ -94,13 +107,13 @@ export default{
 	float: left;
 }
 .docTitle span span{
-	height: 50%;
-	margin-top: 20px;
+	margin-top: 18px;
 	width: 80px;
 	padding-top: 5px;
 	display: inline-block;
 }
 .save{
+	position: relative;
 	background-color: #eee;
 }
 .save:hover{

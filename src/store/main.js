@@ -2,7 +2,7 @@
 * @Author: worldzb
 * @Date:   2018-01-19 00:02:23
 * @Last Modified by:   worldzb
-* @Last Modified time: 2018-02-18 21:06:08
+* @Last Modified time: 2018-02-19 16:24:19
 */
 
 import Vue from 'vue';
@@ -11,11 +11,13 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 const state={
-	newDoc:'',
-	bookList:'',
-	chapterList:'',
+	newDoc:'',//最新文章列表
+	bookList:'',//图书列表
+	chapterList:'',//章节列表
+	editorTitle:'',//文章标题
 }
 
+//action
 const actions={
 	
 }
@@ -31,6 +33,9 @@ const mutations ={
 	},
 	setChapterList(state,arg){
 		state.chapterList=arg;
+	},
+	setEditorTitle(state,arg){
+		state.editorTitle=arg;
 	}
 }
 
@@ -44,6 +49,9 @@ const getters={
 	},
 	getChapterList(state){
 		return state.chapterList.body;
+	},
+	getEditorTitle(state){
+		return state.editorTitle;
 	}
 }
 

@@ -2,7 +2,7 @@
 * @Author: worldzb
 * @Date:   2018-01-08 20:52:24
 * @Last Modified by:   worldzb
-* @Last Modified time: 2018-02-13 22:25:57
+* @Last Modified time: 2018-02-19 16:24:24
 */
 
 const state={
@@ -24,7 +24,7 @@ const mutations={
 	},
 	setArrImage(state,arg){
 		state.arrImage=arg;
-	}
+	},
 };
 const actions={};
 const getters={
@@ -40,6 +40,7 @@ const getters={
 	getArrImage(state){
 		return state.arrImage;
 	},
+
 };
 let editorStore={
 	state,

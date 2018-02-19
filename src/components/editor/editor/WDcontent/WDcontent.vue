@@ -1,7 +1,7 @@
 <template>
-	<div id="content" >
-		<div class="mainBody" id="mb" contenteditable="true" :style="sty">
-			<div v-html="content">
+	<div id="content">
+		<div>
+			<div class="mainBody" id="mb" contenteditable="true" :style="sty" v-html="content">
 				
 			</div>
 		</div>
@@ -67,7 +67,7 @@
 
 <style type="text/css" scoped>
 	::-webkit-scrollbar{
-	  display:none;
+	  display:block;
 	} 
 
 	.mainBody{

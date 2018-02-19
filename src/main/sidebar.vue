@@ -5,8 +5,25 @@
 			<div class="module-title">
 				<div>
 					<br>
-					<i class="fa fa-plus"></i>
-					<a href="javascript:;" title="">新建文档</a>
+					<span class="createDoc dropdown-toggle" data-toggle="dropdown">
+						<i class="fa fa-plus"></i>
+						&nbsp;
+						<span>新建文档</span>
+					</span>
+					<ul class="dropdown-menu createDocItem" role="menu">
+						<li>
+							<i class="fa fa-file-text-o"></i> &nbsp;
+							新建笔记
+						</li>
+						<li>
+							<i>m</i> &nbsp;
+							新建Markdown
+						</li>
+						<li>
+							<i class="fa fa-book"></i> &nbsp;
+							新建图书
+						</li>
+					</ul>
 				</div>
 			</div>
 
@@ -42,8 +59,47 @@
 				title="" 
 				v-for="(item,index) in bookList" 
 				@click='getBookChapter(index,item.id)'>
-					<i class="fa fa-book"></i>&nbsp;
-					{{item.bookName}}
+					<span>
+						<i class="fa fa-book"></i>&nbsp;
+						{{item.bookName}}
+					</span>
+					<!-- <span class="rename">
+						<i class="fa fa-book"></i>&nbsp;
+						<input type="text" name="" v-model='item.bookName'>
+					</span> -->
+
+					<!-- 图书设置 -->
+					<span class="pull-right" v-if="isModuleActive[1].child[index]">
+						<span class="angle-down dropdown-toggle more" data-toggle="dropdown">
+							<i class="fa fa-angle-down"></i>
+						</span>
+						<ul class="dropdown-menu createDocItem" role="menu" style='width:150px;'>
+							<li>
+								<i class="fa fa-file-text-o"></i> &nbsp;
+								新建文档
+							</li>
+							<li>
+								<i>m</i> &nbsp;
+								Markdown
+							</li>
+							<li>
+								<i class="fa fa-refresh"></i> &nbsp;
+								重命名
+							</li>
+							<li>
+								<i class="fa fa-long-arrow-right"></i> &nbsp;
+								移动到
+							</li>
+							<li>
+								<i class="fa fa-trash-o"></i> &nbsp;
+								删除
+							</li>
+							<li>
+								<i class="fa fa-info"></i> &nbsp;
+								详细信息
+							</li>
+						</ul>
+					</span>
 				</a>
 			</div>
 
@@ -63,13 +119,10 @@
 <script>
 
 import Vue from 'vue';
-import VueResource from 'vue-resource';
 import {mapGetters,mapMutations,mapActions} from 'vuex';
 import GlobalFunc from '../lib/globalFunc.js';
 import config from '../config/config.js';
 
-
-Vue.use(VueResource);
 
 export default{
 	data(){
@@ -78,6 +131,9 @@ export default{
 			isload:{
 				mybook:false,
 				newDoc:false,
+			},
+			isShow:{
+
 			},
 			siderBarClass:"col-md-2 sider-bar",
 			isModuleActive:[{self:true},{self:false},{self:false},{self:false}],
@@ -215,49 +271,87 @@ export default{
 
 <style>
 
-::-webkit-scrollbar{
-  display:none;
-} 
-/*
-隐藏滚动条
- */
-.module-title{
-	height: 60px;
-	width: 100%;
-	background-color: #fff;
-	border-bottom: 2px solid #eee;
-	text-align: center;
-}
-.module-title div{
-	width: 100%;
-	height: 60px;
-	font-size: 18px;
-	cursor: pointer;
-}
-.module-title div a:hover{
-	color: red;
-}
+	::-webkit-scrollbar{
+	  display:none;
+	} 
+	/*
+	隐藏滚动条
+	 */
+	.module-title{
+		height: 60px;
+		width: 100%;
+		background-color: #fff;
+		border-bottom: 2px solid #eee;
+		text-align: center;
+	}
+	.module-title div{
+		width: 100%;
+		height: 60px;
+		font-size: 16px;
+		cursor: pointer;
+	}
+	.module-title div a{
+		text-decoration: none
+	}
+	.createDoc{
+		padding: 10px 15px;
+		background-color: #eee;
+	}
+	.createDoc:hover{
+		background-color: #337AB7;
+		color:#fff;
+	}
+	.createDocItem{
+		margin: 0;
+		padding: 0;
+		border-radius: 0;
+	}
+	.createDocItem li{
+		color:#000;
+		padding: 10px 20px;
+		width: 100%;
+	}
+	.createDocItem li:hover{
+		background-color: #337AB7;
+		color:#fff;
+	}
+	.setting{
+		width: 150px;
+		color:#fff;
+		background-color: red;
+	}
+	.angle-down{
+	}
 
 
-.col-md-2 .list-group-item{ -webkit-border-radius: 0;
-	-moz-border-radius: 0;
-	border-radius: 0;
-	border: none;
-	height: 50px;
-	line-height: 30px;
-}
-.sider-bar{padding:0; 
-	background-color: #fff;
-	overflow-x:hidden;
-	border-right: 2px solid #eee;
-}
-.sider-bar-ul{background-color: #fff;
-	overflow-y:auto;
-	overflow-x:hidden;
-}
-.new-doc a{
-	padding-left: 40px;
-}
-.doc-list{
-}
+	.rename{
+		color:#000;
+	}
+	.rename input{
+		padding: 0;
+		margin:0;
+		height: 25px;
+		width: 60%
+	}
+
+
+	.col-md-2 .list-group-item{ -webkit-border-radius: 0;
+		-moz-border-radius: 0;
+		border-radius: 0;
+		border: none;
+		height: 50px;
+		line-height: 30px;
+	}
+	.sider-bar{padding:0; 
+		background-color: #fff;
+		overflow-x:hidden;
+		border-right: 2px solid #eee;
+	}
+	.sider-bar-ul{background-color: #fff;
+		overflow-y:auto;
+		overflow-x:hidden;
+	}
+	.new-doc a{
+		padding-left: 40px;
+	}
 </style>

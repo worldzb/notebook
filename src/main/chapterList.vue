@@ -13,11 +13,22 @@
 
 			<!-- 模块导航 -->
 			<div class="navig">
-				<span class="">
+				<span class="" @click="showMyBook()">
 					<a href="javascript:;" title="">{{navInfo.first}}</a>
 				</span>
 				<span v-if="isShow.chapter">
-					<span><i class="fa fa-angle-double-right"></i></span>
+					<span class="booklist">
+						<span class="dropdown-toggle" data-toggle="dropdown">
+							<a href="javascript:;">
+								<i class="fa fa-angle-double-right"></i>
+							</a>
+						</span>
+						<ul class="dropdown-menu createDocItem" role="menu">
+							<li v-for="(item,index) in getBooklist">
+								{{item.bookName}}
+							</li>
+						</ul>
+					</span>
 					<span><a href="javascript:;" title="">{{navInfo.sec}}</a></span>
 				</span>
 			</div>
@@ -25,33 +36,101 @@
 
 			<!-- 列表显示 -->
 			<div v-if="isShow.newDoc">
-				<a href="javascript:;" class="list-group-item" v-for="(item,index) in showData">
-					<i class="fa fa-book" style="color:#f6ce62">
-					</i> &nbsp;
-					{{item.doc_title}}
+				<a href="javascript:;" 
+				:class="isActive.showData[index]?'list-group-item active':'list-group-item'"  
+				v-for="(item,index) in showData"
+				@click="loadContent(item.cotent_id,index)">
+					<span>
+						<i class="fa fa-book" style="color:#f6ce62">
+						</i> &nbsp;
+						{{item.doc_title}}
+					</span>
+					<span class="pull-right" v-if="isActive.showData[index]">
+						<span class="angle-down dropdown-toggle more" data-toggle="dropdown">
+							<i class="fa fa-angle-down"></i>
+						</span>
+						<ul class="dropdown-menu createDocItem" role="menu" style='width:150px;'>
+							<li>
+								<i class="fa fa-file-text-o"></i> &nbsp;
+								新建文档
+							</li>
+							<li>
+								<i>m</i> &nbsp;
+								Markdown
+							</li>
+							<li>
+								<i class="fa fa-refresh"></i> &nbsp;
+								重命名
+							</li>
+							<li>
+								<i class="fa fa-long-arrow-right"></i> &nbsp;
+								移动到
+							</li>
+							<li>
+								<i class="fa fa-trash-o"></i> &nbsp;
+								删除
+							</li>
+						</ul>
+					</span>
 				</a>
+
 			</div>
 
 			<div v-if="isShow.booklist">
-				<a href="javascript:;" class="list-group-item" v-for="(item,index) in showData">
-					<i class="fa fa-book" style="color:#f6ce62">
-					</i> &nbsp;
-					{{item.bookName}}
+				<a href="javascript:;" 
+				:class="isActive.showData[index]?'list-group-item active':'list-group-item'" 
+				v-for="(item,index) in showData"
+				@click='switchModule(index)'>
+					<span>
+						<i class="fa fa-book" style="color:#f6ce62">
+						</i> &nbsp;
+						{{item.bookName}}
+					</span>
+					<span>
+						<i></i>
+					</span>
 				</a>
 			</div>
 			
 			<div v-if="isShow.chapter">
 				<a href="javascript:;" 
-				class="list-group-item" 
+				:class="isActive.showData[index]?'list-group-item active':'list-group-item'" 
 				v-for="(item,index) in showData"
-				@click="loadContent()">
-					<i class="fa fa-book" style="color:#f6ce62">
-					</i> &nbsp;
-					{{item.title}}
+				@click="loadContent(item.cotent_id,index)">
+					<span>
+						<i class="fa fa-book" style="color:#f6ce62">
+						</i> &nbsp;
+						{{item.doc_title}}
+					</span>
+					<span class="pull-right" v-if="isActive.showData[index]">
+						<span class="angle-down dropdown-toggle more" data-toggle="dropdown">
+							<i class="fa fa-angle-down"></i>
+						</span>
+						<ul class="dropdown-menu createDocItem" role="menu" style='width:150px;'>
+							<li>
+								<i class="fa fa-file-text-o"></i> &nbsp;
+								新建文档
+							</li>
+							<li>
+								<i>m</i> &nbsp;
+								新建Markdown
+							</li>
+							<li>
+								<i class="fa fa-refresh"></i> &nbsp;
+								重命名
+							</li>
+							<li>
+								<i class="fa fa-long-arrow-right"></i> &nbsp;
+								移动到
+							</li>
+							<li>
+								<i class="fa fa-trash-o"></i> &nbsp;
+								删除
+							</li>
+						</ul>
+					</span>	
 				</a>
 			</div>
-			
-
 		</div>
 	</div>
 </template>
@@ -61,7 +140,7 @@
 
 import {mapGetters,mapMutations} from 'vuex';
 import GlobalFunc from '../lib/globalFunc.js';
-
+import config from '../config/config.js';
 
 export default{
 	data(){
@@ -81,6 +160,10 @@ export default{
 				chapter:false,
 				newDoc:false,
 			},
+			//列表切换 activ
+			isActive:{
+				showData:[],
+			}
 		}
 	},
 	computed:{
@@ -105,6 +188,12 @@ export default{
 			this.isShow.chapter=true;
 			this.showData=val;
 		},
+		showData:function(val){
+			this.isActive.showData=[];
+			for(let i=0;i<val.length;i++){
+				this.isActive.showData.push(false);
+			}
+		}
 	},
 	created:function(){
 		
@@ -117,30 +206,61 @@ export default{
 	},
 
 	methods:{
-		...mapMutations(['setEditorContent']),
+		...mapMutations(['setEditorContent','setEditorTitle']),
 		closeShow(){
 			this.isShow.booklist=false;
 			this.isShow.chapter=false;
 			this.isShow.newDoc=false;
 		},
-		loadContent(){
-			this.setEditorContent('haha');
+		loadContent($index,$indexItem){
+			let that=this;
+
+			this.$http.get(config.urls.getContent,{
+				params:{
+					id:$index
+				}
+			}).then(function(res){
+				let red=eval(res);
+				that.setEditorTitle(red.data.body[0].title);
+				that.setEditorContent(red.data.body[0].content);
+			});
+			this.switchModule($indexItem);
+		},
+		switchModule($index){
+			for(let i=0;i<this.isActive.showData.length;i++){
+				this.$set(this.isActive.showData,i,false);
+			}
+			this.$set(this.isActive.showData,$index,true);
+		},
+		showMyBook(){
+			if(this.navInfo.first=="我的图书"){
+				this.closeShow();
+				this.isShow.booklist=true;
+				this.showData=this.getBooklist;
+			}
 		}
+
 	}
 }
 	
 </script>
 
 
-<style>
-
+<style scoped>
+	::-webkit-scrollbar{
+	  display:block;
+	} 
 
 	/*
 	隐藏滚动条
 	 */
 	.navig{
 		height:30px;
-		border-bottom: 2px solid #eee
+		display: inline-block;
+		/* border-bottom: 2px solid #eee */
+	}
+	.navig span{
+		float: left;
 	}
 	.navig span a{
 		padding: 5px;
@@ -196,5 +316,13 @@ export default{
 	#search i:hover{
 		background-color: #999;
 		color: white
+	}
+	.booklist{
+		position: relative;
+	}
+	.booklist ul{
+		cursor: pointer;
+		max-height: 300px;
+		overflow-y: auto;
 	}
 </style>
