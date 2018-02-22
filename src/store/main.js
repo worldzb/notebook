@@ -2,15 +2,17 @@
 * @Author: worldzb
 * @Date:   2018-01-19 00:02:23
 * @Last Modified by:   worldzb
-* @Last Modified time: 2018-02-19 16:24:19
+* @Last Modified time: 2018-02-22 14:51:44
 */
 
 import Vue from 'vue';
 import Vuex from 'vuex';
+import action from './actions.js'
 
 Vue.use(Vuex);
 
 const state={
+	message:'',//全部通知信息
 	newDoc:'',//最新文章列表
 	bookList:'',//图书列表
 	chapterList:'',//章节列表
@@ -18,9 +20,7 @@ const state={
 }
 
 //action
-const actions={
-	
-}
+const actions=action;
 
 
 //set
@@ -36,6 +36,9 @@ const mutations ={
 	},
 	setEditorTitle(state,arg){
 		state.editorTitle=arg;
+	},
+	setMessage(state,arg){
+		state.message=arg;
 	}
 }
 
@@ -52,6 +55,9 @@ const getters={
 	},
 	getEditorTitle(state){
 		return state.editorTitle;
+	},
+	getMessage(){
+		return state.message;
 	}
 }
 

@@ -19,7 +19,7 @@
 							<i>m</i> &nbsp;
 							新建Markdown
 						</li>
-						<li>
+						<li @click="addBook()">
 							<i class="fa fa-book"></i> &nbsp;
 							新建图书
 						</li>
@@ -58,15 +58,16 @@
 				:class="isModuleActive[1].child[index]?'list-group-item doc-list active':'list-group-item doc-list'" 
 				title="" 
 				v-for="(item,index) in bookList" 
-				@click='getBookChapter(index,item.id)'>
-					<span>
+				@click='getBookChapter(index,item.id)' 
+				@dblclick='switchEditor(index,true)'>
+					<span v-show="!isEditor.bookList[index]">
 						<i class="fa fa-book"></i>&nbsp;
 						{{item.bookName}}
 					</span>
-					<!-- <span class="rename">
+					<span class="rename" v-show="isEditor.bookList[index]">
 						<i class="fa fa-book"></i>&nbsp;
-						<input type="text" name="" v-model='item.bookName'>
-					</span> -->
+						<input type="text" name="" v-model='item.bookName' @blur='switchEditor(index,false)'>
+					</span>
 
 					<!-- 图书设置 -->
 					<span class="pull-right" v-if="isModuleActive[1].child[index]">
@@ -75,6 +76,10 @@
 						</span>
 						<ul class="dropdown-menu createDocItem" role="menu" style='width:150px;'>
 							<li>
+								<i class="fa fa-book"></i> &nbsp;
+								新建图书
+							</li>
+							<li>
 								<i class="fa fa-file-text-o"></i> &nbsp;
 								新建文档
 							</li>
@@ -82,7 +87,7 @@
 								<i>m</i> &nbsp;
 								Markdown
 							</li>
-							<li>
+							<li @click="switchEditor(index,true)">
 								<i class="fa fa-refresh"></i> &nbsp;
 								重命名
 							</li>
@@ -118,7 +123,7 @@
 
 <script>
 
-import Vue from 'vue';
+//import Vue from 'vue';
 import {mapGetters,mapMutations,mapActions} from 'vuex';
 import GlobalFunc from '../lib/globalFunc.js';
 import config from '../config/config.js';
@@ -140,6 +145,10 @@ export default{
 			switchList:{},
 			bookList:'',
 			newDocList:'',
+			isEditor:{
+				bookList:[],
+			},
+			
 		}
 	},
 	created:function(){
@@ -162,7 +171,8 @@ export default{
 	 */
 	methods:{
 		//...mapActions(['asynBookList']),
-		...mapMutations(['setNewDoc','setBookList','setChapterList']),
+		...mapMutations(['setNewDoc','setBookList','setChapterList','setMessage']),
+		...mapActions(['addDoc']),
 		//获取最近文档
 		getNewDoc(){
 			let that=this;
@@ -183,7 +193,8 @@ export default{
 				this.isModuleActive[0].child=arr;
 				this.isload.newDoc=false;//加载动画关闭，加载完成
 				//console.log(res);
-			})
+			});
+			this.addDoc();
 		},
 
 		//获取我的图书
@@ -203,7 +214,8 @@ export default{
 				for(let i=0;i<that.bookList.length;i++){
 					arr[i]=false;
 				}
-				this.isModuleActive[1].child=arr;
+				this.isModuleActive[1].child=arr;//为图书列表添加是否激活选项
+				this.isEditor.bookList=arr;//为图书列表添加是否启用编辑选项
 			});
 		},
 
@@ -261,6 +273,28 @@ export default{
 				that.setChapterList(red.data);
 			})
 			this.switchModule(1,$index);
+		},
+
+		//添加图书
+		addBook(){
+			if(!this.getBooklist){
+				this.getMyBook();
+				this.setMessage('请先获取图书');
+			}else{
+				this.getBooklist.splice(0,0,{
+					author:"haha",
+					bookName:"新建图书",
+				})
+			}
+		},
+		switchEditor($index,bool){
+			this.$set(this.isEditor.bookList,$index,bool);
+			if(bool===true){
+				//加一个定时器 以解决 执行速度过快，导致当前刚从 show 出来的 input不能聚焦
+				setTimeout(function(){
+					GlobalFunc.focus('.rename',$index);
+				},1);
+			}
 		}
 
 	}
@@ -328,6 +362,7 @@ export default{
 		color:#000;
 	}
 	.rename input{
+		border:none;
 		padding: 0;
 		margin:0;
 		height: 25px;

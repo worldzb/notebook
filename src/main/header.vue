@@ -13,17 +13,21 @@
                         		{{appName}}
 								&nbsp;<small><small>{{version}}</small></small>
                         	</a>
-
+                        </div>
+                        <div class="navbar-header">
+                        	<a class="navbar-brand f-20" href="#">
+                        		{{getMessage}}
+                        	</a>
                         </div>
                         <div>
-                        <ul class="nav navbar-nav navbar-right">
-							<li><a href="/www/lt/index.php/User/register"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
-							<li class="dropdown">
-								<a class="dropdown-toggle"  data-toggle="dropdown" href="#">
-								    <span class="glyphicon glyphicon-log-in"></span> 登录
-								</a>
-							</li>
-						</ul>
+	                        <ul class="nav navbar-nav navbar-right">
+								<li><a href="/www/lt/index.php/User/register"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+								<li class="dropdown">
+									<a class="dropdown-toggle"  data-toggle="dropdown" href="#">
+									    <span class="glyphicon glyphicon-log-in"></span> 登录
+									</a>
+								</li>
+							</ul>
                         </div>
                     </div>
 				</nav>
@@ -36,8 +40,17 @@
 <script>
 	
 	import config from '../config/config.js';
+	import {mapGetters} from 'vuex';
 	export default{
 		name:"bookHeader",
+		data(){
+			return{
+
+			}
+		},
+		computed:{
+			...mapGetters(['getMessage']),
+		},
 		data(){
 			return {
 				appName:config.appName,

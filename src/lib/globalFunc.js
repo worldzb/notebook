@@ -2,7 +2,7 @@
 * @Author: worldzb
 * @Date:   2018-01-19 18:51:15
 * @Last Modified by:   worldzb
-* @Last Modified time: 2018-01-21 18:05:59
+* @Last Modified time: 2018-02-22 17:17:30
 */
 
 
@@ -33,6 +33,10 @@ class GlobalFunc{
 		$(objA).css('height',$(window).height()-$(objB).height()+20);
 	}
 	
+	static focus(className,index){
+		$(`${className} input`).eq(index).focus();
+		//console.log(index);
+	}
 
 }
 export default GlobalFunc;

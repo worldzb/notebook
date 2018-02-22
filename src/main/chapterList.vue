@@ -24,7 +24,7 @@
 							</a>
 						</span>
 						<ul class="dropdown-menu createDocItem" role="menu">
-							<li v-for="(item,index) in getBooklist">
+							<li v-for="(item,index) in getBooklist" @click='getBookChapter(item.id)'>
 								{{item.bookName}}
 							</li>
 						</ul>
@@ -80,7 +80,7 @@
 				<a href="javascript:;" 
 				:class="isActive.showData[index]?'list-group-item active':'list-group-item'" 
 				v-for="(item,index) in showData"
-				@click='switchModule(index)'>
+				@click='switchModule(index)' @dblclick="getBookChapter(item.id)">
 					<span>
 						<i class="fa fa-book" style="color:#f6ce62">
 						</i> &nbsp;
@@ -183,7 +183,8 @@ export default{
 			this.showData=val;
 		},
 		getChapterList:function(val){
-			this.closeShow();
+			this.closeShow();	
+			this.navInfo.first="我的图书";
 			this.navInfo.sec="章节列表";
 			this.isShow.chapter=true;
 			this.showData=val;
@@ -206,12 +207,14 @@ export default{
 	},
 
 	methods:{
-		...mapMutations(['setEditorContent','setEditorTitle']),
+		...mapMutations(['setEditorContent','setEditorTitle','setChapterList']),
+		//关闭显示
 		closeShow(){
 			this.isShow.booklist=false;
 			this.isShow.chapter=false;
 			this.isShow.newDoc=false;
 		},
+		//加载内容
 		loadContent($index,$indexItem){
 			let that=this;
 
@@ -226,18 +229,32 @@ export default{
 			});
 			this.switchModule($indexItem);
 		},
+
+		//激活切换
 		switchModule($index){
 			for(let i=0;i<this.isActive.showData.length;i++){
 				this.$set(this.isActive.showData,i,false);
 			}
 			this.$set(this.isActive.showData,$index,true);
 		},
+		//
 		showMyBook(){
 			if(this.navInfo.first=="我的图书"){
 				this.closeShow();
 				this.isShow.booklist=true;
 				this.showData=this.getBooklist;
 			}
+		},
+		getBookChapter($id){
+			let that=this;
+			this.$http.get(config.urls.getChapter,{
+				params:{
+					id:$id
+				}
+			}).then((res)=>{
+				let red=eval(res);
+				that.setChapterList(red.data);
+			})
 		}
 
 	}
