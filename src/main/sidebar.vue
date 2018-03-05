@@ -11,15 +11,15 @@
 						<span>新建文档</span>
 					</span>
 					<ul class="dropdown-menu createDocItem" role="menu">
-						<li>
+						<li @click='createDoc()'> 
 							<i class="fa fa-file-text-o"></i> &nbsp;
-							新建笔记
+							新建文档
 						</li>
 						<li>
 							<i>m</i> &nbsp;
 							新建Markdown
 						</li>
-						<li @click="addBook()">
+						<li @click="createBook()">
 							<i class="fa fa-book"></i> &nbsp;
 							新建图书
 						</li>
@@ -75,10 +75,10 @@
 							<i class="fa fa-angle-down"></i>
 						</span>
 						<ul class="dropdown-menu createDocItem" role="menu" style='width:150px;'>
-							<li>
+							<!-- <li>
 								<i class="fa fa-book"></i> &nbsp;
 								新建图书
-							</li>
+							</li> -->
 							<li>
 								<i class="fa fa-file-text-o"></i> &nbsp;
 								新建文档
@@ -148,7 +148,7 @@ export default{
 			isEditor:{
 				bookList:[],
 			},
-			
+			currentBoodId:'',//当前激活的图书Id
 		}
 	},
 	created:function(){
@@ -156,6 +156,7 @@ export default{
 	},
 	mounted:function(){
 		GlobalFunc.heightSyn('.sider-bar','#header');
+		this.getNewDoc();
 	},
 	updated:function(){
 		
@@ -172,7 +173,7 @@ export default{
 	methods:{
 		//...mapActions(['asynBookList']),
 		...mapMutations(['setNewDoc','setBookList','setChapterList','setMessage']),
-		...mapActions(['addDoc']),
+		...mapActions(['addDoc','addBook']),
 		//获取最近文档
 		getNewDoc(){
 			let that=this;
@@ -194,7 +195,6 @@ export default{
 				this.isload.newDoc=false;//加载动画关闭，加载完成
 				//console.log(res);
 			});
-			this.addDoc();
 		},
 
 		//获取我的图书
@@ -241,8 +241,15 @@ export default{
 				}
 				this.$set(this.isModuleActive[indexParent].child,indexChild,true);//只是child局部更新
 				this.$set(this.isModuleActive,indexParent,{self:false,child:this.isModuleActive[indexParent].child});
+				//全局更新
+
+				//判断图书时候被激活，激活：将图书Id 存起来，否则为null
+				if(indexParent==1 && indexChild!=null){
+					this.currentBoodId=this.bookList[indexChild].id;
+				}else{
+					this.currentBoodId=null;
+				}
 			}
-			//console.log(this.isModuleActive[indexParent].child)
 		},
 
 		//获取图书名称
@@ -276,17 +283,20 @@ export default{
 		},
 
 		//添加图书
-		addBook(){
+		createBook(){
 			if(!this.getBooklist){
 				this.getMyBook();
 				this.setMessage('请先获取图书');
 			}else{
-				this.getBooklist.splice(0,0,{
-					author:"haha",
-					bookName:"新建图书",
-				})
+				this.addBook();
 			}
 		},
+
+		//添加文档
+		createDoc(){
+			this.addDoc(this.currentBoodId);
+		},
+		//编辑模式切换
 		switchEditor($index,bool){
 			this.$set(this.isEditor.bookList,$index,bool);
 			if(bool===true){
@@ -366,7 +376,7 @@ export default{
 		padding: 0;
 		margin:0;
 		height: 25px;
-		width: 60%
+		width: 60%;
 	}
 
 

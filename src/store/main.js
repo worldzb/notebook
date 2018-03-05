@@ -2,7 +2,7 @@
 * @Author: worldzb
 * @Date:   2018-01-19 00:02:23
 * @Last Modified by:   worldzb
-* @Last Modified time: 2018-02-22 14:51:44
+* @Last Modified time: 2018-02-23 13:19:15
 */
 
 import Vue from 'vue';
@@ -17,6 +17,7 @@ const state={
 	bookList:'',//图书列表
 	chapterList:'',//章节列表
 	editorTitle:'',//文章标题
+	isLoadContent:false,//文章是否加载
 }
 
 //action
@@ -39,6 +40,9 @@ const mutations ={
 	},
 	setMessage(state,arg){
 		state.message=arg;
+	},
+	setIsLoadContent(state,arg){
+		state.isLoadContent=arg;
 	}
 }
 
@@ -56,8 +60,11 @@ const getters={
 	getEditorTitle(state){
 		return state.editorTitle;
 	},
-	getMessage(){
+	getMessage(state){
 		return state.message;
+	},
+	getIsLoadContent(state){
+		return state.isLoadContent;
 	}
 }
 

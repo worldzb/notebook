@@ -2,7 +2,7 @@
 * @Author: worldzb
 * @Date:   2018-01-18 19:44:27
 * @Last Modified by:   worldzb
-* @Last Modified time: 2018-02-19 15:55:17
+* @Last Modified time: 2018-02-23 20:13:52
 */
 
 import Vue from 'vue';
@@ -10,7 +10,7 @@ import Vue from 'vue';
 import App from './App.vue';
 import {editor,editorStore} from './components/editor/editor/index.js';
 import store from './store/main.js';
-import axios from 'axios';
+//import axios from 'axios';
 import VueResource from 'vue-resource';
 
 Vue.use(VueResource);

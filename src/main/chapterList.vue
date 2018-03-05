@@ -39,18 +39,24 @@
 				<a href="javascript:;" 
 				:class="isActive.showData[index]?'list-group-item active':'list-group-item'"  
 				v-for="(item,index) in showData"
-				@click="loadContent(item.cotent_id,index)">
-					<span>
+				@click="loadContent(item.cotent_id,index)"
+				@dblclick='switchEditor(index,true)'>
+					<span v-show="!isEditor.chapterList[index]">
 						<i class="fa fa-book" style="color:#f6ce62">
 						</i> &nbsp;
 						{{item.doc_title}}
 					</span>
+					<span class="chapterListRename" v-show="isEditor.chapterList[index]">
+						<i class="fa fa-book"></i>&nbsp;
+						<input type="text" name="" v-model='item.doc_title' @blur='switchEditor(index,false)'>
+					</span>
+
 					<span class="pull-right" v-if="isActive.showData[index]">
 						<span class="angle-down dropdown-toggle more" data-toggle="dropdown">
 							<i class="fa fa-angle-down"></i>
 						</span>
 						<ul class="dropdown-menu createDocItem" role="menu" style='width:150px;'>
-							<li>
+							<!-- <li>
 								<i class="fa fa-file-text-o"></i> &nbsp;
 								新建文档
 							</li>
@@ -61,7 +67,7 @@
 							<li>
 								<i class="fa fa-refresh"></i> &nbsp;
 								重命名
-							</li>
+							</li> -->
 							<li>
 								<i class="fa fa-long-arrow-right"></i> &nbsp;
 								移动到
@@ -96,18 +102,24 @@
 				<a href="javascript:;" 
 				:class="isActive.showData[index]?'list-group-item active':'list-group-item'" 
 				v-for="(item,index) in showData"
-				@click="loadContent(item.cotent_id,index)">
-					<span>
+				@click="loadContent(item.cotent_id,index)"
+				@dblclick='switchEditor(index,true)'>
+					<span v-show="!isEditor.chapterList[index]">
 						<i class="fa fa-book" style="color:#f6ce62">
 						</i> &nbsp;
 						{{item.doc_title}}
 					</span>
+					<span class="chapterListRename" v-show="isEditor.chapterList[index]">
+						<i class="fa fa-book"></i>&nbsp;
+						<input type="text" name="" v-model='item.doc_title' @blur='switchEditor(index,false)'>
+					</span>
+
 					<span class="pull-right" v-if="isActive.showData[index]">
 						<span class="angle-down dropdown-toggle more" data-toggle="dropdown">
 							<i class="fa fa-angle-down"></i>
 						</span>
 						<ul class="dropdown-menu createDocItem" role="menu" style='width:150px;'>
-							<li>
+							<!-- <li>
 								<i class="fa fa-file-text-o"></i> &nbsp;
 								新建文档
 							</li>
@@ -118,7 +130,7 @@
 							<li>
 								<i class="fa fa-refresh"></i> &nbsp;
 								重命名
-							</li>
+							</li> -->
 							<li>
 								<i class="fa fa-long-arrow-right"></i> &nbsp;
 								移动到
@@ -163,6 +175,9 @@ export default{
 			//列表切换 activ
 			isActive:{
 				showData:[],
+			},
+			isEditor:{
+				chapterList:[],
 			}
 		}
 	},
@@ -193,6 +208,7 @@ export default{
 			this.isActive.showData=[];
 			for(let i=0;i<val.length;i++){
 				this.isActive.showData.push(false);
+				this.isEditor.chapterList.push(false);
 			}
 		}
 	},
@@ -207,7 +223,7 @@ export default{
 	},
 
 	methods:{
-		...mapMutations(['setEditorContent','setEditorTitle','setChapterList']),
+		...mapMutations(['setEditorContent','setEditorTitle','setChapterList','setIsLoadContent']),
 		//关闭显示
 		closeShow(){
 			this.isShow.booklist=false;
@@ -228,6 +244,7 @@ export default{
 				that.setEditorContent(red.data.body[0].content);
 			});
 			this.switchModule($indexItem);
+			this.setIsLoadContent()
 		},
 
 		//激活切换
@@ -255,6 +272,15 @@ export default{
 				let red=eval(res);
 				that.setChapterList(red.data);
 			})
+		},
+		switchEditor($index,bool){
+			this.$set(this.isEditor.chapterList,$index,bool);
+			if(bool===true){
+				//加一个定时器 以解决 执行速度过快，导致当前刚从 show 出来的 input不能聚焦
+				setTimeout(function(){
+					GlobalFunc.focus('.chapterListRename',$index);
+				},1);
+			}
 		}
 
 	}
@@ -341,5 +367,15 @@ export default{
 		cursor: pointer;
 		max-height: 300px;
 		overflow-y: auto;
+	}
+	.chapterListRename{
+		color:#000;
+	}
+	.chapterListRename input{
+		border:none;
+		padding: 0;
+		margin:0;
+		height: 25px;
+		width: 60%
 	}
 </style>

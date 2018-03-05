@@ -29,9 +29,9 @@
 				</div>
 			</div>
 		</div>
-		
 		<wd-editor></wd-editor>
 	</div>
+	
 </div>
 </template>
 
@@ -59,7 +59,7 @@ export default{
 	updated(){
 		
 	},
-	computed:mapGetters(['getEditorTitle']),
+	computed:mapGetters(['getEditorTitle','getIsLoadContent']),
 	watch:{
 		//标题get
 		getEditorTitle:function(val){
