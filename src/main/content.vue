@@ -80,6 +80,11 @@ export default{
 
 
 <style>
+
+#contentBox{
+	font-family:”微软雅黑”
+}
+
 .col-md-8 .list-group-item{ -webkit-border-radius: 0;
 	-moz-border-radius: 0;
 	border-radius: 0;

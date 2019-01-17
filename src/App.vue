@@ -39,4 +39,7 @@
   .appBody{
     margin-top: -20px; 
   }
+  #app{
+    font-size: 13px;
+  }
 </style>
